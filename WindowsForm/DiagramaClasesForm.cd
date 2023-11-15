@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WindowsForm.FormLogin">
+    <Position X="2.5" Y="1" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAQAAQACAAAASAEAACQBAACAAAkBAAAA=</HashCode>
+      <FileName>FormLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsForm.FormPaciente">
+    <Position X="8" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>QAAAECAAEHCQAAgABACAAAACACAQAAAABAIIACAAAAA=</HashCode>
+      <FileName>FormPaciente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsForm.FormPacienteConsultorioExterno">
+    <Position X="11.25" Y="7.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACCAAAgIAACEACCCAgAAAAAAIEAAAAAAAAA=</HashCode>
+      <FileName>FormPacienteConsultorioExterno.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsForm.FormPacienteHospitalizado">
+    <Position X="4.75" Y="7.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAgCCAAAgACAKAAAACAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>FormPacienteHospitalizado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsForm.FormPacienteUrgencia">
+    <Position X="8" Y="7.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACCgAAgACACAACAKIAAAAAAAAEAAAAAAAIA=</HashCode>
+      <FileName>FormPacienteUrgencia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsForm.FormPrincipalPacientes">
+    <Position X="14.25" Y="1" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>JAAIRAAQAKCRCKAAAACAQkAKCQBEAAEAABAAKCgCCgA=</HashCode>
+      <FileName>FormPrincipalPacientes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Entidades.Clinica">
+    <Position X="10.25" Y="1.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAAEABAABAAAAAAxAEAAIAAAgAAAAAAAAAAAAACAiA=</HashCode>
+      <FileName>Clinica.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.Paciente">
+    <Position X="5.25" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAABAAQAAQCEgAAAgAAAAAAAAgABAAIAAAAAAiA=</HashCode>
+      <FileName>Paciente.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.PacienteConsultorioExterno">
+    <Position X="8.25" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAEgAABAAAAAQAAAAABAAAAAAABAiA=</HashCode>
+      <FileName>PacienteConsultorioExterno.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.PacienteHospitalizado">
+    <Position X="2.25" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAEAAAAEgAAAAAAAAAEAAAABAAAAAAAAEiA=</HashCode>
+      <FileName>PacienteHospitalizado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.PacienteUrgencia">
+    <Position X="5.25" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAACAAAAAgAEgAAAAAAAAAAAQAABAAAAAAAAAiA=</HashCode>
+      <FileName>PacienteUrgencia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.UsuarioLogin">
+    <Position X="0.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQBAACEAAAAAAAAAAQAAACAAAAQAAAAAAA=</HashCode>
+      <FileName>UsuarioLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="EEspecialidadUrgencia">
+    <Position X="5.25" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enumerados.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EEspecialidad">
+    <Position X="8.25" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACgAACAAAAAUAAAAAEAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enumerados.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
