@@ -11,7 +11,23 @@ namespace WindowsForm
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FormLogin());
+
+            FormLogin frmLogin = new FormLogin();
+            if (frmLogin.ShowDialog() == DialogResult.OK )
+            {
+                FormPrincipalPacientes frmPrincipal = new FormPrincipalPacientes(frmLogin.UsuarioLogin);
+
+                frmPrincipal.FormClosing += (sender, e) =>
+                {
+                    frmLogin.Close();
+                };
+
+                Application.Run(frmPrincipal);
+            }
+            else
+            {
+                frmLogin.Close();
+            }
         }
     }
 }

@@ -94,7 +94,6 @@ namespace WindowsForm
                     this.GuardarUsuarioLogueado(usuarioVerificado, usuarioLogueado);
                     FormPrincipalPacientes formPrincipalPacientes = new FormPrincipalPacientes(usuarioLogueado);
                     formPrincipalPacientes.Show();
-                    this.Hide();
                     break;
                 }
             }
@@ -144,22 +143,6 @@ namespace WindowsForm
                 {
                     MessageBox.Show(e.Message);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Maneja el evento de cierre del formulario de inicio de sesión.
-        /// Antes de cerrar la aplicación solicita verificar el cierre de la misma a través de una confirmación.
-        /// </summary>
-        /// <param name="sender">Representa el objeto que genera el evento.</param>
-        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de cierre.</param>
-        private void FormLogin_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DialogResult rtaCierre = MessageBox.Show("¿Está seguro de que desea cerrar la aplicación?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (rtaCierre == DialogResult.No)
-            {
-                e.Cancel = true;
             }
         }
         

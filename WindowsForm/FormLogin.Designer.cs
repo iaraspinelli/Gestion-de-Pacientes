@@ -94,7 +94,6 @@
             Name = "FormLogin";
             Text = "Usuario Login";
             Load += FormLogin_Load;
-            FormClosing += FormLogin_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }
