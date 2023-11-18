@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Entidades
 {
@@ -26,7 +27,7 @@ namespace Entidades
         /// <summary>
         /// Permite la lectura de lo que devuelve las consultas SQL. 
         /// </summary>
-        private SqlDataReader reader;
+        private SqlDataReader lectorSql;
         #endregion
 
 
@@ -81,6 +82,7 @@ namespace Entidades
         }
         #endregion
 
+
         #region Lector de consultas SQL
         /// <summary>
         /// Ejecuta una sentencia SQL que se le pasa como parámetro.
@@ -102,50 +104,166 @@ namespace Entidades
         }
         #endregion
 
+
         #region CONSULTA SELECT
-        public List<Paciente> ObtenerListaDatos()
+        /// <summary>
+        /// Recorre el lector de datos y crea instancias de la clase PacienteUrgencia para cada registro obtenido, asignando los valores correspondientes a las propiedades de la clase.
+        /// </summary>
+        /// <param name="lectorSql">El lector de datos SqlDataReader que contiene los resultados de la consulta.</param>
+        /// <returns>
+        /// Devuelve una lista de objetos PacienteUrgencia que representan los registros obtenidos del lector de datos.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la lectura de datos desde el lectorSql.
+        /// </exception>
+
+        public List<PacienteUrgencia> ObtenerPacienteUrgencia(SqlDataReader lectorSql)
         {
-            List<Paciente> lista = new List<Paciente>();
+            List<PacienteUrgencia> listaPacienteUrgencia = new List<PacienteUrgencia>();
 
             try
             {
-                this.comando = new SqlCommand();
-                this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = "SELECT tipoPaciente,nombre,apellido,edad,dni,cobertura FROM paciente";
 
-                this.comando.Connection = this.conexion;
-                this.conexion.Open();
-                this.reader = this.comando.ExecuteReader(); 
-
-                while (this.reader.Read())
+                while (lectorSql.Read())
                 {
-                    Paciente paciente;
-                    paciente.Id = (int)this.reader["id"];
-                    //Esto retorna un object, asi que hay que castearlo a int
+                    PacienteUrgencia pacienteUrgencia = new PacienteUrgencia();
 
-                    dato.cadena = this.reader[1].ToString();
-                    //Es un array de indexado, asi que se le pone la posicion donde se encuentra "cadena" en el select, que seria la posicion 1.
-                    //Como devuelve un object, se le agrega el metodo to string
+                    pacienteUrgencia.Id = (int)lectorSql["id"];
+                    pacienteUrgencia.Nombre = lectorSql[1].ToString();
+                    pacienteUrgencia.Apellido = lectorSql[2].ToString();
+                    pacienteUrgencia.Edad = (int)lectorSql["edad"];
+                    pacienteUrgencia.Dni = (int)lectorSql["dni"];
+                    pacienteUrgencia.Cobertura = lectorSql[5].ToString();
+                    pacienteUrgencia.FechaIngreso = lectorSql.GetDateTime(6);
+                    pacienteUrgencia.EspecialidadUrgencia = (EEspecialidadUrgencia)lectorSql.GetInt32(7);
 
-                    //int entero = this.reader.GetInt32(2);
-                    dato.entero = (int)this.reader["entero"];
-
-                    dato.flotante = (float)this.reader.GetDouble(3);
-                    //Al flotante se le agrega el get double, y se le pasa el numero de la posicion del campo a flotear, segun la posicion en la que esta en la consulta select. Siempre se asume el tipo mas grande de ese tipo.
-
-
-                    //Dato dato = new Dato(id, cadena, entero, flotante);
-
-                    lista.Add(dato);
-                    //Se agrega el dato a la lista de Datos
+                    listaPacienteUrgencia.Add(pacienteUrgencia);
                 }
-
-                this.reader.Close(); //Cerrar el reader, sino queda el recurso abierto
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception("Error al obtener pacientes en urgencias desde el lectorSql.", ex);
             }
+
+            return listaPacienteUrgencia;
+        }
+
+        /// <summary>
+        /// Recorre el lector de datos y crea instancias de la clase PacienteConsultorioExterno para cada registro obtenido, asignando los valores correspondientes a las propiedades de la clase.
+        /// </summary>
+        /// <param name="lectorSql">El lector de datos SqlDataReader que contiene los resultados de la consulta.</param>
+        /// <returns>
+        /// Devuelve una lista de objetos PacienteConsultorioExterno que representan los registros obtenidos del lector de datos.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la lectura de datos desde el lectorSql.
+        /// </exception>
+        public List<PacienteConsultorioExterno> ObtenerPacienteConsultorioExterno(SqlDataReader lectorSql)
+        {
+            List<PacienteConsultorioExterno> listaPacienteConsultorioExterno = new List<PacienteConsultorioExterno>();
+
+            try
+            { 
+                while (lectorSql.Read())
+                {
+                    PacienteConsultorioExterno pacienteConsultorioExterno = new PacienteConsultorioExterno();
+
+                    pacienteConsultorioExterno.Id = (int)lectorSql["id"];
+                    pacienteConsultorioExterno.Nombre = lectorSql[1].ToString();
+                    pacienteConsultorioExterno.Apellido = lectorSql[2].ToString();
+                    pacienteConsultorioExterno.Edad = (int)lectorSql["edad"];
+                    pacienteConsultorioExterno.Dni = (int)lectorSql["dni"];
+                    pacienteConsultorioExterno.Cobertura = lectorSql[5].ToString();
+                    pacienteConsultorioExterno.FechaTurno = lectorSql.GetDateTime(6);
+                    pacienteConsultorioExterno.Especialidad = (EEspecialidad)lectorSql.GetInt32(7);
+
+                    listaPacienteConsultorioExterno.Add(pacienteConsultorioExterno);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener pacientes en consultorios externos desde el lectorSql.", ex);
+            }
+
+            return listaPacienteConsultorioExterno;
+        }
+
+        /// <summary>
+        /// Recorre el lector de datos y crea instancias de la clase PacienteHospitalizado para cada registro obtenido, asignando los valores correspondientes a las propiedades de la clase.
+        /// </summary>
+        /// <param name="lectorSql">El lector de datos SqlDataReader que contiene los resultados de la consulta.</param>
+        /// <returns>
+        /// Devuelve una lista de objetos PacienteHospitalizado que representan los registros obtenidos del lector de datos.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la lectura de datos desde el lectorSql.
+        /// </exception>
+        public List<PacienteHospitalizado> ObtenerPacienteHospitalizado(SqlDataReader lectorSql)
+        {
+            List<PacienteHospitalizado> listaPacienteHospitalizado = new List<PacienteHospitalizado>();
+
+            try
+            {
+                while (lectorSql.Read())
+                {
+                    PacienteHospitalizado pacienteHospitalizado = new PacienteHospitalizado();
+
+                    pacienteHospitalizado.Id = (int)lectorSql["id"];
+                    pacienteHospitalizado.Nombre = lectorSql[1].ToString();
+                    pacienteHospitalizado.Apellido = lectorSql[2].ToString();
+                    pacienteHospitalizado.Edad = (int)lectorSql["edad"];
+                    pacienteHospitalizado.Dni = (int)lectorSql["dni"];
+                    pacienteHospitalizado.Cobertura = lectorSql[5].ToString();
+                    pacienteHospitalizado.FechaInternacion = lectorSql.GetDateTime(6);
+                    pacienteHospitalizado.NumeroHabitacion = (int)lectorSql["numeroHabitacion"];
+
+                    listaPacienteHospitalizado.Add(pacienteHospitalizado);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener pacientes en hospitalización desde el lectorSql.", ex);
+            }
+
+            return listaPacienteHospitalizado;
+        }
+
+        /// <summary>
+        /// Obtiene la lista de pacientes desde la base de datos, a traves del lectorSql para ejecutar una consulta Sql según la tabla especificada, y la agrega a la lista proporcionada.
+        /// </summary>
+        /// <param name="listaPacientes">La lista de pacientes a la que se agregarán los resultados.</param>
+        /// <param name="tablaPaciente">El nombre de la tabla de la base de datos que contiene los pacientes específicos.</param>
+        /// <returns>
+        /// Devuelve true si se obtuvo y agregó la lista de pacientes correctamente; de lo contrario, devuelve false.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la obtención o agregado de la lista de pacientes.
+        /// </exception>
+
+        public bool ObtenerListaPacientes(List<Paciente> listaPacientes, string tablaPaciente)
+        {
+
+            bool respuestaLista = false;
+            try
+            {
+                string sentencia = $"SELECT * from {tablaPaciente}";
+                this.lectorSql = EjecutarLector(sentencia);
+
+                if (tablaPaciente != null)
+                {
+                    if (tablaPaciente == "pacienteUrgencia")
+                        listaPacientes.AddRange(ObtenerPacienteUrgencia(this.lectorSql));
+                    else if (tablaPaciente == "pacienteConsultorioExterno")
+                        listaPacientes.AddRange(ObtenerPacienteConsultorioExterno(this.lectorSql));
+                    else if (tablaPaciente == "pacienteHospitalizado")
+                        listaPacientes.AddRange(ObtenerPacienteHospitalizado(this.lectorSql));
+
+                    respuestaLista = true;
+                }
+
+                this.lectorSql.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener lista de pacientes.", ex);
+            }
+
             finally
             {
                 if (this.conexion.State == System.Data.ConnectionState.Open)
@@ -154,128 +272,24 @@ namespace Entidades
                 }
             }
 
-            return lista;
+            return respuestaLista;
         }
+
+
+
         #endregion
 
+
         #region INSERT
-        public bool AgregarDato(Dato dato)
-        {
-            bool result = false;
-            try
-            {
-                this.command = new SqlCommand();
-                this.command.Parameters.AddWithValue("@cadena", dato.cadena);
-                this.command.Parameters.AddWithValue("@entero", dato.entero);
-                this.command.Parameters.AddWithValue("@flotante", dato.flotante);
-
-                this.command.CommandType = System.Data.CommandType.Text;
-                this.command.CommandText = $"INSERT INTO dato(cadena,entero,flotante) VALUES(@cadena, @entero, @flotante)";
-
-                this.command.Connection = this.conexion;
-                this.conexion.Open();
-
-                //Este metodo Query sirve para insert, update y delete
-                int filasAfectadas = this.command.ExecuteNonQuery();
-                if (filasAfectadas == 1) //Porque ejecuta de a una fila
-                {
-                    result = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return result;
-        }
+        
         #endregion
 
         #region UPDATE
-        public bool ModificarDato(Dato dato)
-        {
-            bool result = false;
-            try
-            {
-                this.command = new SqlCommand();
-
-                //Este metodo permite pasarle parametros, los parametros para sql server empiezan con @
-                this.command.Parameters.AddWithValue("@id", dato.id);
-                this.command.Parameters.AddWithValue("@cadena", dato.cadena);
-                this.command.Parameters.AddWithValue("@entero", dato.entero);
-                this.command.Parameters.AddWithValue("@flotante", dato.flotante);
-
-                this.command.CommandType = System.Data.CommandType.Text;
-                this.command.CommandText = $"UPDATE dato SET cadena = @cadena, entero = @entero, flotante = @flotante WHERE id = @id";
-
-
-                this.command.Connection = this.conexion;
-                this.conexion.Open();
-
-                int filasAfectadas = this.command.ExecuteNonQuery();
-                if (filasAfectadas == 1)
-                {
-                    result = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return result;
-        }
 
         #endregion
 
         #region DELETE
-        public bool BorrarDato(Dato dato)
-        {
-            bool result = false;
-            try
-            {
-                this.command = new SqlCommand();
-                this.command.Connection = this.conexion;
-                this.command.Parameters.AddWithValue("@id", dato.id);
-                this.command.CommandType = System.Data.CommandType.Text;
-                this.command.CommandText = $"DELETE FROM dato WHERE id=@id";
-
-                this.conexion.Open();
-
-                int filasAfectadas = this.command.ExecuteNonQuery();
-                if (filasAfectadas == 1)
-                {
-                    result = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return result;
-        }
+        
         #endregion
 
 

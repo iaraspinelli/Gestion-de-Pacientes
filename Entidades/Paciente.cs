@@ -21,8 +21,7 @@ namespace Entidades
     {
         #region Atributos
 
-        public int id;
-        public string tipoPaciente;
+        protected int id;
         protected string nombre;
         protected string apellido;
         protected int edad;
@@ -32,6 +31,12 @@ namespace Entidades
         #endregion
 
         #region Propiedades
+
+        public int Id
+        {
+            get { return this.id; }
+            set { this.id = value; }
+        }
 
         public string Nombre
         {
