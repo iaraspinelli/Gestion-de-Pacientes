@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Button btnAgregar;
-            Button btnOrdenar;
             lstPacientes = new ListBox();
             lblOrdenItem = new Label();
             lblOrdenManera = new Label();
@@ -47,20 +45,6 @@
             btnAgregar = new Button();
             btnOrdenar = new Button();
             SuspendLayout();
-            // 
-            // btnAgregar
-            // 
-            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
-            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnAgregar.FlatStyle = FlatStyle.Flat;
-            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAgregar.Location = new Point(22, 118);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(86, 35);
-            btnAgregar.TabIndex = 7;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = false;
-            btnAgregar.Click += btnAgregar_Click;
             // 
             // lstPacientes
             // 
@@ -171,7 +155,7 @@
             lblUsuario.BorderStyle = BorderStyle.FixedSingle;
             lblUsuario.FlatStyle = FlatStyle.Flat;
             lblUsuario.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblUsuario.Location = new Point(514, 27);
+            lblUsuario.Location = new Point(557, 9);
             lblUsuario.Name = "lblUsuario";
             lblUsuario.Padding = new Padding(3);
             lblUsuario.Size = new Size(54, 23);
@@ -181,10 +165,10 @@
             // lblDetalles
             // 
             lblDetalles.AutoSize = true;
-            lblDetalles.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDetalles.Location = new Point(816, 106);
+            lblDetalles.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            lblDetalles.Location = new Point(816, 104);
             lblDetalles.Name = "lblDetalles";
-            lblDetalles.Size = new Size(136, 19);
+            lblDetalles.Size = new Size(115, 15);
             lblDetalles.TabIndex = 19;
             lblDetalles.Text = "Ver Detalles Paciente";
             lblDetalles.Click += lblDetalles_Click;
@@ -195,11 +179,11 @@
             // 
             lblDatosUsuario.AutoSize = true;
             lblDatosUsuario.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDatosUsuario.Location = new Point(849, 35);
+            lblDatosUsuario.Location = new Point(557, 45);
             lblDatosUsuario.Name = "lblDatosUsuario";
-            lblDatosUsuario.Size = new Size(99, 15);
+            lblDatosUsuario.Size = new Size(118, 15);
             lblDatosUsuario.TabIndex = 21;
-            lblDatosUsuario.Text = "Ver Datos Usuario";
+            lblDatosUsuario.Text = "Ver Historial Usuarios";
             lblDatosUsuario.Click += lblDatosUsuario_Click;
             lblDatosUsuario.MouseLeave += lblDatosUsuario_MouseLeave;
             lblDatosUsuario.MouseMove += lblDatosUsuario_MouseMove;
@@ -207,6 +191,20 @@
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
+            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAgregar.Location = new Point(22, 118);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(86, 35);
+            btnAgregar.TabIndex = 7;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // btnOrdenar
             // 
@@ -261,6 +259,7 @@
         private Button btnAgregar;
         private Button btnModificar;
         private Button btnEliminar;
+        private Button btnOrdenar;
         private Label lblIngresoPaciente;
         private ComboBox cboIngresoPaciente;
         private Label lblUsuario;

@@ -43,6 +43,17 @@ namespace WindowsForm
             this.StartPosition = FormStartPosition.CenterScreen;
             this.listaPacientes = new Clinica();
             this.usuarioLogueado = usuarioLogueado;
+
+            if (this.usuarioLogueado.perfil == "vendedor")
+            {
+                this.btnAgregar.Visible = false;
+                this.btnModificar.Visible = false;
+                this.btnEliminar.Visible = false;
+            }
+            else if (this.usuarioLogueado.perfil == "supervisor")
+            {
+                this.btnEliminar.Visible = false;
+            }
         }
         #endregion
 
@@ -59,35 +70,37 @@ namespace WindowsForm
         {
             this.lblUsuario.Text = this.usuarioLogueado.ToString();
 
-            OpenFileDialog abrirArchivo = new OpenFileDialog();
-            using (abrirArchivo)
-            {
-                abrirArchivo.Filter = "XML Files (*.xml)|*.xml";
-                if (abrirArchivo.ShowDialog() == DialogResult.OK)
-                {
-                    string nombreArchivo = abrirArchivo.FileName;
+            /*
+            //OpenFileDialog abrirArchivo = new OpenFileDialog();
+            //using (abrirArchivo)
+            //{
+            //    abrirArchivo.Filter = "XML Files (*.xml)|*.xml";
+            //    if (abrirArchivo.ShowDialog() == DialogResult.OK)
+            //    {
+            //        string nombreArchivo = abrirArchivo.FileName;
 
-                    XmlSerializer srXml = new XmlSerializer(typeof(List<Paciente>));
+            //        XmlSerializer srXml = new XmlSerializer(typeof(List<Paciente>));
 
-                    try
-                    {
-                        using (XmlTextReader lectorXml = new XmlTextReader(nombreArchivo))
-                        {
-                            listaPacientes.Pacientes = (List<Paciente>)srXml.Deserialize(lectorXml);
-                        }
-                        this.ActualizarListadoPacientes();
-                    }
-                    catch (Exception excepcion)
-                    {
-                        MessageBox.Show(excepcion.Message);
-                        this.DialogResult = DialogResult.OK;
-                    }
-                }
-                else
-                {
-                    this.DialogResult = DialogResult.OK;
-                }
-            }
+            //        try
+            //        {
+            //            using (XmlTextReader lectorXml = new XmlTextReader(nombreArchivo))
+            //            {
+            //                listaPacientes.Pacientes = (List<Paciente>)srXml.Deserialize(lectorXml);
+            //            }
+            //            this.ActualizarListadoPacientes();
+            //        }
+            //        catch (Exception excepcion)
+            //        {
+            //            MessageBox.Show(excepcion.Message);
+            //            this.DialogResult = DialogResult.OK;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        this.DialogResult = DialogResult.OK;
+            //    }
+            //}
+            */
         }
 
         /// <summary>
@@ -204,7 +217,7 @@ namespace WindowsForm
             }
         }
 
-/// <summary>
+        /// <summary>
         /// Maneja el evento de clic en el botón "Eliminar", pidiendo confirmación para eliminar un paciente y lo elimina del listado si se confirma.
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
@@ -381,7 +394,6 @@ namespace WindowsForm
             }
         }
 
-
         /// <summary>
         /// Maneja el evento de cierre del formulario principal de pacientes, pidiendo confirmación al usuario antes de cerrar la aplicación.
         /// Si se confirma el cierre, permite guardar los datos de la lista de pacientes, solamente en un archivo XML (patrón de filtro con *.xml), a través de la serialización para XML.
@@ -396,31 +408,33 @@ namespace WindowsForm
             {
                 e.Cancel = true;
             }
-            else
-            {
-                SaveFileDialog guardarArchivo = new SaveFileDialog();
-                using (guardarArchivo)
-                {
-                    guardarArchivo.Filter = "XML Files (*.xml)|*.xml";
-                    if (guardarArchivo.ShowDialog() == DialogResult.OK)
-                    {
-                        string nombreArchivo = guardarArchivo.FileName;
+            /*
+            //else
+            //{
+            //    SaveFileDialog guardarArchivo = new SaveFileDialog();
+            //    using (guardarArchivo)
+            //    {
+            //        guardarArchivo.Filter = "XML Files (*.xml)|*.xml";
+            //        if (guardarArchivo.ShowDialog() == DialogResult.OK)
+            //        {
+            //            string nombreArchivo = guardarArchivo.FileName;
 
-                        XmlSerializer srXml = new XmlSerializer(typeof(List<Paciente>));
+            //            XmlSerializer srXml = new XmlSerializer(typeof(List<Paciente>));
 
-                        using (XmlTextWriter escritorXml = new XmlTextWriter(nombreArchivo, Encoding.UTF8))
-                        {
-                            srXml.Serialize(escritorXml, listaPacientes.Pacientes);
-                        }
-                        this.DialogResult = DialogResult.OK;
-                    }
-                    else
-                    {
-                        e.Cancel = true;
-                    }
+            //            using (XmlTextWriter escritorXml = new XmlTextWriter(nombreArchivo, Encoding.UTF8))
+            //            {
+            //                srXml.Serialize(escritorXml, listaPacientes.Pacientes);
+            //            }
+            //            this.DialogResult = DialogResult.OK;
+            //        }
+            //        else
+            //        {
+            //            e.Cancel = true;
+            //        }
 
-                }
-            }
+            //    }
+            //}
+            */
         }
 
         #endregion

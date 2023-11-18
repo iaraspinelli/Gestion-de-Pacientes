@@ -24,7 +24,7 @@ namespace Entidades
         /// <returns>Retorna una cadena que representa el usuario con su nombre, apellido y la fecha de ingreso a la aplicación.</returns>
         public override string ToString()
         {
-            return $"Usuario: {this.nombre} {this.apellido} - Fecha de ingreso: {DateTime.Now.ToString("dd/MM/yyyy")}";
+            return $"Usuario: {this.nombre} {this.apellido} - Perfil : {this.perfil} - Fecha login: {DateTime.Now.ToString("dd/MM/yyyy")}";
         }
 
     }

@@ -120,11 +120,8 @@ namespace WindowsForm
                 pathUsuarioLog += @"\Usuarios";
                 StringBuilder datosUsuarioLogueado = new StringBuilder();
 
-                datosUsuarioLogueado.AppendLine($"Apellido: {usuarioLogueado.apellido}");
-                datosUsuarioLogueado.AppendLine($"Nombre: {usuarioLogueado.nombre}");
-                datosUsuarioLogueado.AppendLine($"Legajo: {usuarioLogueado.legajo}");
-                datosUsuarioLogueado.AppendLine($"Correo: {usuarioLogueado.correo}");
-                datosUsuarioLogueado.AppendLine($"Perfil: {usuarioLogueado.perfil}");
+                datosUsuarioLogueado.AppendLine($"Legajo: {usuarioLogueado.legajo} - Perfil: {usuarioLogueado.perfil}");
+                datosUsuarioLogueado.AppendLine($"Usuario: {usuarioLogueado.nombre} {usuarioLogueado.apellido} - Correo: {usuarioLogueado.correo}");
                 datosUsuarioLogueado.AppendLine($"Fecha de login: {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
                 datosUsuarioLogueado.ToString();
 
