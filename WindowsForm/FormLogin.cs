@@ -92,8 +92,8 @@ namespace WindowsForm
                     rtaUsuario = usuarioLogueado;
                     bool usuarioVerificado = true;
                     this.GuardarUsuarioLogueado(usuarioVerificado, usuarioLogueado);
-                    FormPrincipalPacientes formPrincipalPacientes = new FormPrincipalPacientes(usuarioLogueado);
-                    formPrincipalPacientes.Show();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                     break;
                 }
             }
@@ -134,9 +134,9 @@ namespace WindowsForm
                     if (!Directory.Exists(pathUsuarioLog))
                         Directory.CreateDirectory(pathUsuarioLog);
 
-                    using (StreamWriter escritorLogin = new StreamWriter(pathUsuarioLog + @"\usuarios.log", false, miCodificacion))
+                    using (StreamWriter escritorLogin = new StreamWriter(pathUsuarioLog + @"\usuarios.log", true, miCodificacion))
                     {
-                        escritorLogin.WriteLine(datosUsuarioLogueado);
+                        escritorLogin.WriteLine(datosUsuarioLogueado.ToString());
                     }
                 }
                 catch(Exception e)

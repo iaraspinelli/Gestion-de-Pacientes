@@ -15,18 +15,13 @@ namespace WindowsForm
             FormLogin frmLogin = new FormLogin();
             if (frmLogin.ShowDialog() == DialogResult.OK )
             {
-                FormPrincipalPacientes frmPrincipal = new FormPrincipalPacientes(frmLogin.UsuarioLogin);
-
-                frmPrincipal.FormClosing += (sender, e) =>
-                {
-                    frmLogin.Close();
-                };
-
-                Application.Run(frmPrincipal);
+                FormPrincipalPacientes formPrincipal = new FormPrincipalPacientes(frmLogin.UsuarioLogin);
+                formPrincipal.Show();
+                Application.Run(formPrincipal);
             }
             else
             {
-                frmLogin.Close();
+                Application.Exit();
             }
         }
     }

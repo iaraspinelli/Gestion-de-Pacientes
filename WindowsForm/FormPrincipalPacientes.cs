@@ -14,6 +14,7 @@ using System.Xml.Serialization; //Para serializar xml
 using System.Xml;
 using System.Drawing.Text;
 using System.Runtime.CompilerServices;
+using System.Linq.Expressions;
 
 namespace WindowsForm
 {
@@ -244,7 +245,7 @@ namespace WindowsForm
             }
             else
             {
-                MessageBox.Show("No se ha seleccionado ningún paciente para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se ha seleccionado ningún paciente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -369,20 +370,17 @@ namespace WindowsForm
 
             try
             {
-                if (!Directory.Exists(pathUsuarioLog))
-                    Directory.CreateDirectory(pathUsuarioLog);
-
                 using (StreamReader lectorUsuario = new StreamReader(pathUsuarioLog + @"\usuarios.log", miCodificacion))
                 {
                     MessageBox.Show(lectorUsuario.ReadToEnd());
                 }
-
             }
             catch (Exception excepcion)
             {
                 MessageBox.Show(excepcion.Message);
             }
         }
+
 
         /// <summary>
         /// Maneja el evento de cierre del formulario principal de pacientes, pidiendo confirmación al usuario antes de cerrar la aplicación.
