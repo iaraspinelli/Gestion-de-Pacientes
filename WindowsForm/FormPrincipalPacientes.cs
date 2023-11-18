@@ -24,7 +24,7 @@ namespace WindowsForm
     public partial class FormPrincipalPacientes : Form
     {
         #region Atributos
-        private Clinica listaPacientes;
+        private Clinica<Paciente> listaPacientes;
         private UsuarioLogin usuarioLogueado;
         private string ingresoSeleccionado;
         private string tipoOrdenSeleccionado;
@@ -41,7 +41,7 @@ namespace WindowsForm
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.listaPacientes = new Clinica();
+            this.listaPacientes = new Clinica<Paciente>();
             this.usuarioLogueado = usuarioLogueado;
 
             if (this.usuarioLogueado.perfil == "vendedor")
@@ -228,7 +228,7 @@ namespace WindowsForm
 
             if (indexSeleccionado != -1)
             {
-                DialogResult rtaEliminar = MessageBox.Show($"¿Está seguro que desea eliminar el paciente {this.listaPacientes.Pacientes[indexSeleccionado].Nombre.ToUpper()} {this.listaPacientes.Pacientes[indexSeleccionado].Apellido.ToUpper()} con DNI: {this.listaPacientes.Pacientes[indexSeleccionado].Dni}'", "Eliminar", MessageBoxButtons.YesNo);
+                DialogResult rtaEliminar = MessageBox.Show($"¿Está seguro que desea eliminar el paciente {this.listaPacientes.Pacientes[indexSeleccionado].Nombre.ToUpper()} {this.listaPacientes.Pacientes[indexSeleccionado].Apellido.ToUpper()} con DNI: {this.listaPacientes.Pacientes[indexSeleccionado].Dni}?", "Eliminar", MessageBoxButtons.YesNo);
 
                 if (rtaEliminar == DialogResult.Yes)
                 {
@@ -281,22 +281,22 @@ namespace WindowsForm
                     {
                         if (this.maneraOrdenSeleccionado == "Ascendente")
                         {
-                            this.listaPacientes.Pacientes.Sort(Clinica.OrdenarPorNombreAscendente);
+                            this.listaPacientes.Pacientes.Sort(Clinica<Paciente>.OrdenarPorNombreAscendente);
                         }
                         else if (this.maneraOrdenSeleccionado == "Descendente")
                         {
-                            this.listaPacientes.Pacientes.Sort(Clinica.OrdenarPorNombreDescendente);
+                            this.listaPacientes.Pacientes.Sort(Clinica<Paciente>.OrdenarPorNombreDescendente);
                         }
                     }
                     else if (this.tipoOrdenSeleccionado == "DNI")
                     {
                         if (this.maneraOrdenSeleccionado == "Ascendente")
                         {
-                            this.listaPacientes.Pacientes.Sort(Clinica.OrdenarPorDniAscendente);
+                            this.listaPacientes.Pacientes.Sort(Clinica<Paciente>.OrdenarPorDniAscendente);
                         }
                         else if (this.maneraOrdenSeleccionado == "Descendente")
                         {
-                            this.listaPacientes.Pacientes.Sort(Clinica.OrdenarPorDniDescendente);
+                            this.listaPacientes.Pacientes.Sort(Clinica<Paciente>.OrdenarPorDniDescendente);
                         }
                     }
                     this.ActualizarListadoPacientes();

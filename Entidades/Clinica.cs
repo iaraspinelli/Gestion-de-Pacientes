@@ -9,18 +9,18 @@ namespace Entidades
     /// <summary>
     /// Clase publica que representa un objeto Clinica, que contendrá la colección genérica List<Paciente>, en la cual se podrán agregar todos los pacientes cargados.
     /// </summary>
-    public class Clinica
+    public class Clinica<T> where T : Paciente
     {
         #region Atributos
 
-        private List<Paciente> pacientes;
+        private List<T> pacientes;
         private int capacidadPacientes;
 
         #endregion
 
         #region Propiedades
 
-        public List<Paciente> Pacientes
+        public List<T> Pacientes
         {
             get
             {
@@ -47,7 +47,7 @@ namespace Entidades
         /// </summary>
         public Clinica()
         {
-            this.pacientes = new List<Paciente>();
+            this.pacientes = new List<T>();
             this.capacidadPacientes = 10;
         }
 
@@ -62,7 +62,7 @@ namespace Entidades
         /// <returns>Retorna true si el objeto es de tipo Paciente y si es igual al objeto actual.</returns>
         public override bool Equals(object? obj)
         {
-            return this == (Paciente)obj;
+            return this == (T)obj;
         }
 
         #endregion
@@ -75,11 +75,11 @@ namespace Entidades
         /// <param name="listaPacientes">Representa la instancia de la clase Clinica a comparar.</param>
         /// <param name="paciente">Reresenta el objeto de tipo Paciente que se compara con la lista.</param>
         /// <returns>retorna true si el paciente ya está ingresado en la lista.</returns>
-        public static bool operator ==(Clinica listaPacientes, Paciente paciente)
+        public static bool operator ==(Clinica<T> listaPacientes, T paciente)
         {
             bool pacienteIngresado = false;
 
-            foreach(Paciente item in listaPacientes.pacientes)
+            foreach(T item in listaPacientes.pacientes)
             {
                 if(item == paciente)
                 {
@@ -97,7 +97,7 @@ namespace Entidades
         /// <param name="listaPacientes">Representa la instancia de la clase Clinica a comparar.</param>
         /// <param name="paciente">Representa el objeto de tipo Paciente que se compara con la lista.</param>
         /// <returns>Retorna true si el paciente no está ingresado en la lista.</returns>
-        public static bool operator !=(Clinica listaPacientes, Paciente paciente)
+        public static bool operator !=(Clinica<T> listaPacientes, T paciente)
         {
             return !(listaPacientes == paciente);
         }
@@ -108,7 +108,7 @@ namespace Entidades
         /// <param name="listaPacientes">Representa la instancia de la clase Clinica a la que se agrega el paciente.</param>
         /// <param name="paciente">Representa el objeto de tipo Paciente que se agrega a la lista.</param>
         /// <returns>Retorna la instancia de la clase Clinica con el paciente agregado si se cumple con las condiciones; si se cumplen se devuelve la instancia original.</returns>
-        public static Clinica operator +(Clinica listaPacientes, Paciente paciente)
+        public static Clinica<T> operator +(Clinica<T> listaPacientes, T paciente)
         {
             if (listaPacientes.pacientes.Count < listaPacientes.capacidadPacientes)
             {
@@ -134,7 +134,7 @@ namespace Entidades
         /// <param name="listaPacientes">Representa la instancia de la clase Clinica de la que se elimina el paciente.</param>
         /// <param name="paciente">Representa el objeto de tipo Paciente que se elimina de la lista.</param>
         /// <returns>Retorna la instancia de la clase Clinica con el paciente eliminado, si el paciente está en la lista; si no está, se devuelve la instancia original.</returns>
-        public static Clinica operator -(Clinica listaPacientes, Paciente paciente)
+        public static Clinica<T> operator -(Clinica<T> listaPacientes, T paciente)
         {
             //foreach (Paciente item in listaPacientes.pacientes)
             //{
@@ -159,7 +159,7 @@ namespace Entidades
         /// <param name="paciente1">Representa el primer objeto de tipo Paciente a comparar.</param>
         /// <param name="paciente2">Representa el segundo objeto de tipo Paciente a comparar.</param>
         /// <returns>Retorna un valor entero que indica la posición de los objetos en el orden ascendente.</returns>
-        public static int OrdenarPorNombreAscendente(Paciente paciente1, Paciente paciente2)
+        public static int OrdenarPorNombreAscendente(T paciente1, T paciente2)
         {
             return string.Compare(paciente1.Nombre, paciente2.Nombre);
         }
@@ -170,7 +170,7 @@ namespace Entidades
         /// <param name="paciente1">Representa el primer objeto de tipo Paciente a comparar.</param>
         /// <param name="paciente2">Representa el segundo objeto de tipo Paciente a comparar.</param>
         /// <returns>Retorna un valor entero que indica la posición de los objetos en el orden descendente.</returns>
-        public static int OrdenarPorNombreDescendente(Paciente paciente1, Paciente paciente2)
+        public static int OrdenarPorNombreDescendente(T paciente1, T paciente2)
         {
             return string.Compare(paciente2.Nombre, paciente1.Nombre);
         }
@@ -181,7 +181,7 @@ namespace Entidades
         /// <param name="paciente1">Representa el primer objeto de tipo Paciente a comparar.</param>
         /// <param name="paciente2">Representa el segundo objeto de tipo Paciente a comparar.</param>
         /// <returns>Retorna un valor entero que indica la posición de los objetos en el orden ascendente.</returns>
-        public static int OrdenarPorDniAscendente(Paciente paciente1, Paciente paciente2)
+        public static int OrdenarPorDniAscendente(T paciente1, T paciente2)
         {
             if (paciente1.Dni > paciente2.Dni)
                 return 1;
@@ -197,7 +197,7 @@ namespace Entidades
         /// <param name="paciente1">Representa el primer objeto de tipo Paciente a comparar.</param>
         /// <param name="paciente2">Representa el segundo objeto de tipo Paciente a comparar.</param>
         /// <returns>Retorna un valor entero que indica la posición de los objetos en el orden descendente.</returns>
-        public static int OrdenarPorDniDescendente(Paciente paciente1, Paciente paciente2)
+        public static int OrdenarPorDniDescendente(T paciente1, T paciente2)
         {
             if (paciente1.Dni < paciente2.Dni)
                 return 1;
