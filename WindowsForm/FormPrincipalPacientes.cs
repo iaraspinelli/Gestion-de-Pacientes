@@ -329,7 +329,7 @@ namespace WindowsForm
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de movimiento del mouse.</param>
         private void lblDetalles_MouseMove(object sender, MouseEventArgs e)
         {
-            this.lblDetalles.Font = new Font("Segoe UI", 10F, FontStyle.Underline, GraphicsUnit.Point);
+            this.lblDetalles.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
             this.lblDetalles.ForeColor = SystemColors.MenuHighlight;
         }
 

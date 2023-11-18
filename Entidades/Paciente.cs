@@ -21,6 +21,8 @@ namespace Entidades
     {
         #region Atributos
 
+        //protected int id;
+        //protected string tipoPaciente;
         protected string nombre;
         protected string apellido;
         protected int edad;
