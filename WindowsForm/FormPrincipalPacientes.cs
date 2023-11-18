@@ -341,7 +341,7 @@ namespace WindowsForm
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de salida del mouse.</param>
         private void lblDetalles_MouseLeave(object sender, EventArgs e)
         {
-            this.lblDetalles.Font = new Font("Segoe UI", 10F, GraphicsUnit.Point);
+            this.lblDetalles.Font = new Font("Segoe UI", 9F, GraphicsUnit.Point);
             this.lblDetalles.ForeColor = SystemColors.ControlText;
         }
 
