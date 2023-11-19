@@ -7,7 +7,7 @@ namespace Entidades
     /// Clase public permite establecer la conexión con el motor de la base de datos Clinica_db.
     /// Permite realizar consultas SQL a la base de datos.
     /// </summary>
-    public class AccesoClinica
+    public class AccesoClinica: IAcceso
     {
         #region Atributos de conexion y consultas SQL
 
@@ -100,7 +100,7 @@ namespace Entidades
         /// <returns>
         /// Un objeto SqlDataReader que permite leer los datos devueltos por la sentencia SQL.
         /// </returns>
-        private SqlDataReader EjecutarLector(string sentencia)
+        public SqlDataReader EjecutarLector(string sentencia)
         {
             this.comando = new SqlCommand();
             this.comando.CommandType = System.Data.CommandType.Text;
