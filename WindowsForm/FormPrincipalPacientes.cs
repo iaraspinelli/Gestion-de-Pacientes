@@ -136,8 +136,13 @@ namespace WindowsForm
 
                     if (formPacienteUrgencia.DialogResult == DialogResult.OK)
                     {
-                        this.listaPacientes += formPacienteUrgencia.PacienteUrgencia;
-                        this.ActualizarListadoPacientes();
+                        PacienteUrgencia pacienteUrgencia = formPacienteUrgencia.PacienteUrgencia;
+
+                        if (accesobd.AgregarPacienteUrgencia(pacienteUrgencia))
+                        {
+                            this.listaPacientes += pacienteUrgencia;
+                            this.ActualizarListadoPacientes();
+                        }
                     }
                 }
                 else if (this.ingresoSeleccionado == "Consultorios Externos")
@@ -147,8 +152,13 @@ namespace WindowsForm
 
                     if (formPacienteConsultorio.DialogResult == DialogResult.OK)
                     {
-                        this.listaPacientes += formPacienteConsultorio.PacienteConsultorioExterno;
-                        this.ActualizarListadoPacientes();
+                        PacienteConsultorioExterno pacienteConsultorioExterno = formPacienteConsultorio.PacienteConsultorioExterno;
+
+                        if (accesobd.AgregarPacienteConsultorioExterno(pacienteConsultorioExterno))
+                        {
+                            this.listaPacientes += pacienteConsultorioExterno;
+                            this.ActualizarListadoPacientes();
+                        }
                     }
                 }
                 else if (this.ingresoSeleccionado == "Hospitalización")
@@ -158,8 +168,13 @@ namespace WindowsForm
 
                     if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
                     {
-                        this.listaPacientes += formPacienteHospitalizado.PacienteHospitalizado;
-                        this.ActualizarListadoPacientes();
+                        PacienteHospitalizado pacienteHospitalizado = formPacienteHospitalizado.PacienteHospitalizado;
+
+                        if (accesobd.AgregarPacienteHospitalizado(pacienteHospitalizado))
+                        {
+                            this.listaPacientes += pacienteHospitalizado;
+                            this.ActualizarListadoPacientes();
+                        }
                     }
                 }
             }

@@ -270,175 +270,190 @@ namespace Entidades
         #endregion
 
 
-        //#region INSERT
-        ///// <summary>
-        ///// Genera los parámetros de un objeto Paciente para su uso en consultas SQL.
-        ///// </summary>
-        ///// <param name="paciente">El objeto Paciente del cual se extraerán los parámetros.</param>
-        //public void GenerarParametrosPaciente(Paciente paciente)
-        //{
-        //    this.comando.Parameters.AddWithValue("@nombre", paciente.Nombre);
-        //    this.comando.Parameters.AddWithValue("@apellido", paciente.Apellido);
-        //    this.comando.Parameters.AddWithValue("@edad", paciente.Edad);
-        //    this.comando.Parameters.AddWithValue("@dni", paciente.Dni);
-        //    this.comando.Parameters.AddWithValue("@cobertura", paciente.Cobertura);
-        //}
+        #region INSERT
+        /// <summary>
+        /// Genera los parámetros de un objeto Paciente para su uso en consultas SQL.
+        /// </summary>
+        /// <param name="paciente">El objeto Paciente del cual se extraerán los parámetros.</param>
+        public void GenerarParametrosPaciente(Paciente paciente, SqlCommand comando)
+        {
+            comando.Parameters.AddWithValue("@nombre", paciente.Nombre);
+            comando.Parameters.AddWithValue("@apellido", paciente.Apellido);
+            comando.Parameters.AddWithValue("@edad", paciente.Edad);
+            comando.Parameters.AddWithValue("@dni", paciente.Dni);
+            comando.Parameters.AddWithValue("@cobertura", paciente.Cobertura);
+        }
 
-        //public void GenerarParametrosPacienteUrgencia(PacienteUrgencia pacienteUrgencia)
-        //{
-        //    this.comando.Parameters.AddWithValue("@nombre", paciente.Nombre);
-        //    this.comando.Parameters.AddWithValue("@apellido", paciente.Apellido);
-        //    this.comando.Parameters.AddWithValue("@edad", paciente.Edad);
-        //    this.comando.Parameters.AddWithValue("@dni", paciente.Dni);
-        //    this.comando.Parameters.AddWithValue("@cobertura", paciente.Cobertura);
-        //}
+        /// <summary>
+        /// Genera los parámetros de un objeto PacienteUrgencia para su uso en consultas SQL.
+        /// </summary>
+        /// <param name="pacienteUrgencia">El objeto PacienteUrgencia del cual se extraerán los parámetros.</param>
+        public void GenerarParametrosPacienteUrgencia(PacienteUrgencia pacienteUrgencia, SqlCommand comando)
+        {
+            comando.Parameters.AddWithValue("@fechaIngreso", pacienteUrgencia.FechaIngreso);
+            comando.Parameters.AddWithValue("@especialidadUrgencia", (int)pacienteUrgencia.EspecialidadUrgencia);
+        }
 
-        ///// <summary>
-        ///// Agrega un nuevo paciente de urgencia a la tabla pacienteUrgencia en la base de datos. 
-        ///// </summary>
-        ///// <param name="pacienteUrgencia">El objeto PacienteUrgencia a agregar.</param>
-        ///// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
-        ///// <exception cref="Exception">Se lanza en caso de error durante la operación.
-        ///// </exception>
-        //public bool AgregarPacienteUrgencia(PacienteUrgencia pacienteUrgencia)
-        //{
-        //    bool respuestaAgregado = false;
-        //    try
-        //    {
-        //        this.comando = new SqlCommand();
+        /// <summary>
+        /// Genera los parámetros de un objeto PacienteConsultorioExterno para su uso en consultas SQL.
+        /// </summary>
+        /// <param name="pacienteConsultorioExterno">El objeto PacienteConsultorioExterno del cual se extraerán los parámetros.</param>
+        public void GenerarParametrosPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno, SqlCommand comando)
+        {
+            this.comando.Parameters.AddWithValue("@fechaTurno", pacienteConsultorioExterno.FechaTurno);
+            this.comando.Parameters.AddWithValue("@especialidad", (int)pacienteConsultorioExterno.Especialidad);
+        }
 
-        //        GenerarParametrosPaciente(pacienteUrgencia);
-        //        this.comando.Parameters.AddWithValue("@fechaIngreso", pacienteUrgencia.FechaIngreso);
-        //        this.comando.Parameters.AddWithValue("@especialidadUrgencia", (int)pacienteUrgencia.EspecialidadUrgencia);
+        /// <summary>
+        /// Genera los parámetros de un objeto PacienteHospitalizado para su uso en consultas SQL.
+        /// </summary>
+        /// <param name="pacienteHospitalizado">El objeto PacienteHospitalizado del cual se extraerán los parámetros.</param>
+        public void GenerarParametrosPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, SqlCommand comando)
+        {
+            this.comando.Parameters.AddWithValue("@fechaInternacion", pacienteHospitalizado.FechaInternacion);
+            this.comando.Parameters.AddWithValue("@numeroHabitacion", pacienteHospitalizado.NumeroHabitacion);
+        }
 
-        //        this.comando.CommandType = System.Data.CommandType.Text;
-        //        this.comando.CommandText = $"INSERT INTO pacienteUrgencia (nombre,apellido,edad,dni,cobertura,fechaIngreso,especialidadUrgencia) VALUES (@nombre, @apellido, @edad, @dni, @dobertura, @fechaIngreso, @especialidadUrgencia)";
+        /// <summary>
+        /// Agrega un nuevo paciente de urgencia a la tabla pacienteUrgencia en la base de datos. 
+        /// </summary>
+        /// <param name="pacienteUrgencia">El objeto PacienteUrgencia a agregar.</param>
+        /// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// </exception>
+        public bool AgregarPacienteUrgencia(PacienteUrgencia pacienteUrgencia)
+        {
+            bool respuestaAgregado = false;
+            try
+            {
+                this.comando = new SqlCommand();
+                GenerarParametrosPaciente(pacienteUrgencia, this.comando);
+                GenerarParametrosPacienteUrgencia(pacienteUrgencia, this.comando);
 
-        //        this.comando.Connection = this.conexion;
-        //        this.conexion.Open();
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.CommandText = $"INSERT INTO pacienteUrgencia (nombre,apellido,edad,dni,cobertura,fechaIngreso,especialidadUrgencia) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaIngreso, @especialidadUrgencia)";
 
-        //        int filasAfectadas = this.comando.ExecuteNonQuery();
-        //        if (filasAfectadas == 1)
-        //        {
-        //            respuestaAgregado = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Error al agregar paciente de urgencias.", ex);
-        //    }
-        //    finally
-        //    {
-        //        if (this.conexion.State == System.Data.ConnectionState.Open)
-        //        {
-        //            this.conexion.Close();
-        //        }
-        //    }
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
 
-        //    return respuestaAgregado;
-        //}
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+                if (filasAfectadas == 1)
+                {
+                    respuestaAgregado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar paciente de urgencias.", ex);
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
 
-        ///// <summary>
-        ///// Agrega un nuevo paciente de consultorios externos a la tabla pacienteConsultorioExterno en la base de datos.
-        ///// </summary>
-        ///// <param name="pacienteConsultorioExterno">El objeto PacienteConsultorioExterno a agregar.</param>
-        ///// <returns>Devuelve true si el paciente de  consultorios externos se agregó correctamente; de lo contrario, false.</returns>
-        ///// <exception cref="Exception">Se lanza en caso de error durante la operación.
-        ///// </exception>
-        //public bool AgregarPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno)
-        //{
-        //    bool respuestaAgregado = false;
-        //    try
-        //    {
-        //        this.comando = new SqlCommand();
+            return respuestaAgregado;
+        }
 
-        //        GenerarParametrosPaciente(pacienteConsultorioExterno);
-        //        this.comando.Parameters.AddWithValue("@fechaTurno", pacienteConsultorioExterno.FechaTurno);
-        //        this.comando.Parameters.AddWithValue("@especialidad", (int)pacienteConsultorioExterno.Especialidad);
+        /// <summary>
+        /// Agrega un nuevo paciente de urgencia a la tabla pacienteConsultorioExterno en la base de datos. 
+        /// </summary>
+        /// <param name="pacienteConsultorioExterno">El objeto PacienteConsultorioExterno a agregar.</param>
+        /// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// </exception>
+        public bool AgregarPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno)
+        {
+            bool respuestaAgregado = false;
+            try
+            {
+                this.comando = new SqlCommand();
+                GenerarParametrosPaciente(pacienteConsultorioExterno, this.comando);
+                GenerarParametrosPacienteConsultorioExterno(pacienteConsultorioExterno, this.comando);
 
-        //        this.comando.CommandType = System.Data.CommandType.Text;
-        //        this.comando.CommandText = $"INSERT INTO pacienteConsultorioExterno (nombre,apellido,edad,dni,cobertura,fechaTurno,especialidad) VALUES (@nombre, @apellido, @edad, @dni, @dobertura, @fechaTurno, @especialidad)";
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.CommandText = $"INSERT INTO pacienteConsultorioExterno (nombre,apellido,edad,dni,cobertura,fechaTurno,especialidad) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaTurno, @especialidad)";
 
-        //        this.comando.Connection = this.conexion;
-        //        this.conexion.Open();
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
 
-        //        int filasAfectadas = this.comando.ExecuteNonQuery();
-        //        if (filasAfectadas == 1)
-        //        {
-        //            respuestaAgregado = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Error al agregar paciente de consultorios externos.", ex);
-        //    }
-        //    finally
-        //    {
-        //        if (this.conexion.State == System.Data.ConnectionState.Open)
-        //        {
-        //            this.conexion.Close();
-        //        }
-        //    }
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+                if (filasAfectadas == 1)
+                {
+                    respuestaAgregado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar paciente de consultorios externos.", ex);
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
 
-        //    return respuestaAgregado;
-        //}
+            return respuestaAgregado;
+        }
 
-        ///// <summary>
-        ///// Agrega un nuevo paciente de hospitalización a la tabla pacienteHospitalizado en la base de datos. 
-        ///// </summary>
-        ///// <param name="pacienteHospitalizado">El objeto PacienteHospitalizado a agregar.</param>
-        ///// <returns>Devuelve true si el paciente de hospitalización se agregó correctamente; de lo contrario, false.</returns>
-        ///// <exception cref="Exception">Se lanza en caso de error durante la operación.
-        ///// </exception>
-        //public bool AgregarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado)
-        //{
-        //    bool respuestaAgregado = false;
-        //    try
-        //    {
-        //        this.comando = new SqlCommand();
+        /// <summary>
+        /// Agrega un nuevo paciente de urgencia a la tabla pacienteHospitalizado en la base de datos. 
+        /// </summary>
+        /// <param name="pacienteHospitalizado">El objeto PacienteHospitalizado a agregar.</param>
+        /// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// </exception>
+        public bool AgregarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado)
+        {
+            bool respuestaAgregado = false;
+            try
+            {
+                this.comando = new SqlCommand();
+                GenerarParametrosPaciente(pacienteHospitalizado, this.comando);
+                GenerarParametrosPacienteHospitalizado(pacienteHospitalizado, this.comando);
 
-        //        GenerarParametrosPaciente(pacienteHospitalizado);
-        //        this.comando.Parameters.AddWithValue("@fechaInternacion", pacienteHospitalizado.FechaInternacion);
-        //        this.comando.Parameters.AddWithValue("@numeroHabitacion", pacienteHospitalizado.NumeroHabitacion);
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.CommandText = $"INSERT INTO pacienteHospitalizado (nombre,apellido,edad,dni,cobertura,fechaInternacion,numeroHabitacion) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaInternacion, @numeroHabitacion)";
 
-        //        this.comando.CommandType = System.Data.CommandType.Text;
-        //        this.comando.CommandText = $"INSERT INTO pacienteHospitalizado (nombre,apellido,edad,dni,cobertura,fechaInternacion,numeroHabitacion) VALUES (@nombre, @apellido, @edad, @dni, @dobertura, @fechaInternacion, @numeroHabitacion)";
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
 
-        //        this.comando.Connection = this.conexion;
-        //        this.conexion.Open();
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+                if (filasAfectadas == 1)
+                {
+                    respuestaAgregado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar paciente de hospitalización.", ex);
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
 
-        //        int filasAfectadas = this.comando.ExecuteNonQuery();
-        //        if (filasAfectadas == 1)
-        //        {
-        //            respuestaAgregado = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Error al agregar paciente de hospitalización.", ex);
-        //    }
-        //    finally
-        //    {
-        //        if (this.conexion.State == System.Data.ConnectionState.Open)
-        //        {
-        //            this.conexion.Close();
-        //        }
-        //    }
-
-        //    return respuestaAgregado;
-        //}
-
-
-        //#endregion
+            return respuestaAgregado;
+        }
 
 
-        //#region UPDATE
+        #endregion
 
-        //#endregion
 
-        //#region DELETE
+        #region UPDATE
 
-        //#endregion
+        #endregion
+
+        #region DELETE
+
+        #endregion
 
 
 
