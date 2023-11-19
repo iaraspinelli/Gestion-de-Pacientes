@@ -26,6 +26,7 @@ namespace WindowsForm
         #region Atributos
         private Clinica<Paciente> listaPacientes;
         private UsuarioLogin usuarioLogueado;
+        private AccesoClinica accesobd;
         private string ingresoSeleccionado;
         private string tipoOrdenSeleccionado;
         private string maneraOrdenSeleccionado;
@@ -41,6 +42,7 @@ namespace WindowsForm
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.accesobd = new();
             this.listaPacientes = new Clinica<Paciente>();
             this.usuarioLogueado = usuarioLogueado;
 
@@ -59,6 +61,12 @@ namespace WindowsForm
 
         #region Metodos y eventos
 
+        private void ObtenerListadoPacientes()
+        {
+            accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteUrgencia");
+            accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteConsultorioExterno");
+            accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteHospitalizado");
+        }
         /// <summary>
         /// Maneja el evento de carga del formulario principal de pacientes.
         /// Establece el texto del label lblUsuario con la información del usuario logueado.
@@ -69,6 +77,11 @@ namespace WindowsForm
         private void FormPrincipalPacientes_Load(object sender, EventArgs e)
         {
             this.lblUsuario.Text = this.usuarioLogueado.ToString();
+            if (accesobd is not null)
+            {
+                ObtenerListadoPacientes();
+            }
+            this.ActualizarListadoPacientes();
 
             /*
             //OpenFileDialog abrirArchivo = new OpenFileDialog();
@@ -102,6 +115,7 @@ namespace WindowsForm
             //}
             */
         }
+
 
         /// <summary>
         /// Maneja el evento de clic en el botón "Agregar", abriendo un formulario específico para agregar un paciente, según el tipo de ingreso seleccionado.
