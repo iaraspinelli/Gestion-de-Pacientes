@@ -449,6 +449,56 @@ namespace Entidades
 
         #region UPDATE
 
+        public bool ModificarPaciente(Paciente paciente)
+        {
+            bool respuestaModificar = false;
+            try
+            {
+                this.comando = new SqlCommand();
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.Parameters.AddWithValue("@id", paciente.Id);
+                GenerarParametrosPaciente(paciente, this.comando);
+
+                if (paciente is PacienteUrgencia)
+                {
+                    GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
+                    this.comando.CommandText = $"UPDATE pacienteUrgencia SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaIngreso=@fechaIngreso,especialidadUrgencia=@especialidadUrgencia WHERE id=@id";
+                }
+                else if (paciente is PacienteConsultorioExterno)
+                {
+                    GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
+                    this.comando.CommandText = $"UPDATE pacienteConsultorioExterno SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaTurno=@fechaTurno,especialidad=@especialidad WHERE id=@id";
+                }
+                else if (paciente is PacienteHospitalizado)
+                {
+                    GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
+                    this.comando.CommandText = $"UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id=@id";
+                }
+
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
+
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+                if (filasAfectadas == 1)
+                {
+                    respuestaModificar = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al querer modificar el paciente.", ex);
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
+
+            return respuestaModificar;
+        }
+
         #endregion
 
         #region DELETE

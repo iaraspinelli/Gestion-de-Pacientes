@@ -48,7 +48,7 @@ namespace WindowsForm
         /// <summary>
         /// Constructor que permite inicializar un formulario con un objeto PacienteUrgencia preexistente, que va a permitir modidificar los datos de ese paciente luego.
         /// <param name="pacienteUrgencia">Representa el objeto PacientepacienteUrgencia que se asocia al formulario.</param>
-        public FormPacienteUrgencia(PacienteUrgencia pacienteUrgencia) : this()
+        public FormPacienteUrgencia(PacienteUrgencia pacienteUrgencia, int idPacienteUrgencia) : this()
         {
             base.txtNombre.Text = pacienteUrgencia.Nombre;
             base.txtApellido.Text = pacienteUrgencia.Apellido;

@@ -67,6 +67,7 @@ namespace WindowsForm
             accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteConsultorioExterno");
             accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteHospitalizado");
         }
+
         /// <summary>
         /// Maneja el evento de carga del formulario principal de pacientes.
         /// Establece el texto del label lblUsuario con la información del usuario logueado.
@@ -201,14 +202,17 @@ namespace WindowsForm
                 if (itemSeleccionado is PacienteUrgencia)
                 {
                     PacienteUrgencia pacienteUrgencia = (PacienteUrgencia)this.listaPacientes.Pacientes[lstPacientes.SelectedIndex];
-
-                    FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia(pacienteUrgencia);
+                    int idPacienteUrgencia = this.listaPacientes.Pacientes[lstPacientes.SelectedIndex].Id;
+                    FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia(pacienteUrgencia, idPacienteUrgencia);
                     formPacienteUrgencia.ShowDialog();
 
                     if (formPacienteUrgencia.DialogResult == DialogResult.OK)
                     {
-                        this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteUrgencia.PacienteUrgencia;
-                        this.ActualizarListadoPacientes();
+                        if (accesobd.ModificarPaciente(pacienteUrgencia))
+                        {
+                            this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteUrgencia.PacienteUrgencia;
+                            this.ActualizarListadoPacientes();
+                        }
                     }
 
                 }
@@ -221,8 +225,11 @@ namespace WindowsForm
 
                     if (formPacienteConsultorioExterno.DialogResult == DialogResult.OK)
                     {
-                        this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
-                        this.ActualizarListadoPacientes();
+                        if (accesobd.ModificarPaciente(pacienteConsultorioExterno))
+                        {
+                            this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
+                            this.ActualizarListadoPacientes();
+                        }
                     }
 
                 }
@@ -235,8 +242,11 @@ namespace WindowsForm
 
                     if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
                     {
-                        this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteHospitalizado.PacienteHospitalizado;
-                        this.ActualizarListadoPacientes();
+                        if (accesobd.ModificarPaciente(pacienteHospitalizado))
+                        {
+                            this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteHospitalizado.PacienteHospitalizado;
+                            this.ActualizarListadoPacientes();
+                        }
                     }
                 }
             }
