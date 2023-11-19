@@ -48,7 +48,7 @@ namespace WindowsForm
         /// <summary>
         /// Constructor que permite inicializar un formulario con un objeto PacienteUrgencia preexistente, que va a permitir modidificar los datos de ese paciente luego.
         /// <param name="pacienteUrgencia">Representa el objeto PacientepacienteUrgencia que se asocia al formulario.</param>
-        public FormPacienteUrgencia(PacienteUrgencia pacienteUrgencia, int idPacienteUrgencia) : this()
+        public FormPacienteUrgencia(PacienteUrgencia pacienteUrgencia) : this()
         {
             base.txtNombre.Text = pacienteUrgencia.Nombre;
             base.txtApellido.Text = pacienteUrgencia.Apellido;
@@ -60,13 +60,13 @@ namespace WindowsForm
         }
         #endregion
 
-        #region Metodos y eventos
+            #region Metodos y eventos
 
-/// <summary>
-        /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles, obteniendo los valores del enum correspondiente. 
-        /// <param name="sender">Representa el objeto que genera el evento.</param>
-        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
-        private void FormPacienteUrgencia_Load(object sender, EventArgs e)
+            /// <summary>
+            /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles, obteniendo los valores del enum correspondiente. 
+            /// <param name="sender">Representa el objeto que genera el evento.</param>
+            /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
+            private void FormPacienteUrgencia_Load(object sender, EventArgs e)
         {
             this.cboEspecialidad.DataSource = Enum.GetValues(typeof(EEspecialidadUrgencia));
         }

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data.SqlClient;
-using System.Collections.Generic;
-using System.Numerics;
 
 namespace Entidades
 {
@@ -270,7 +268,7 @@ namespace Entidades
         #endregion
 
 
-        #region INSERT
+        #region Parametros pacientes
         /// <summary>
         /// Genera los parámetros de un objeto Paciente para su uso en consultas SQL.
         /// </summary>
@@ -314,6 +312,10 @@ namespace Entidades
             this.comando.Parameters.AddWithValue("@numeroHabitacion", pacienteHospitalizado.NumeroHabitacion);
         }
 
+        #endregion
+
+
+        #region INSERT
         /// <summary>
         /// Agrega un nuevo paciente de urgencia a la tabla pacienteUrgencia en la base de datos. 
         /// </summary>
@@ -462,17 +464,17 @@ namespace Entidades
                 if (paciente is PacienteUrgencia)
                 {
                     GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
-                    this.comando.CommandText = $"UPDATE pacienteUrgencia SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaIngreso=@fechaIngreso,especialidadUrgencia=@especialidadUrgencia WHERE id=@id";
+                    this.comando.CommandText = $"UPDATE pacienteUrgencia SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaIngreso = @fechaIngreso, especialidadUrgencia = @especialidadUrgencia WHERE id = @id";
                 }
                 else if (paciente is PacienteConsultorioExterno)
                 {
                     GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
-                    this.comando.CommandText = $"UPDATE pacienteConsultorioExterno SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaTurno=@fechaTurno,especialidad=@especialidad WHERE id=@id";
+                    this.comando.CommandText = $"UPDATE pacienteConsultorioExterno SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaTurno=@fechaTurno,especialidad=@especialidad WHERE id = @id";
                 }
                 else if (paciente is PacienteHospitalizado)
                 {
                     GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
-                    this.comando.CommandText = $"UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id=@id";
+                    this.comando.CommandText = $"UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id = @id";
                 }
 
                 this.comando.Connection = this.conexion;
@@ -499,13 +501,60 @@ namespace Entidades
             return respuestaModificar;
         }
 
+
         #endregion
+
 
         #region DELETE
 
+        public bool EliminarPaciente(Paciente paciente)
+        {
+            bool respuestaEliminar = false;
+            try
+            {
+                this.comando = new SqlCommand();
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.Parameters.AddWithValue("@id", paciente.Id);
+
+                if (paciente is PacienteUrgencia)
+                {
+                    this.comando.CommandText = $"DELETE FROM pacienteUrgencia WHERE id = @id";
+                }
+                else if (paciente is PacienteConsultorioExterno)
+                {
+                    this.comando.CommandText = $"DELETE FROM pacienteConsultorioExterno WHERE id = @id";
+                }
+                else if (paciente is PacienteHospitalizado)
+                {
+                    this.comando.CommandText = $"DELETE FROM pacienteHospitalizado WHERE id = @id";
+                }
+
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
+
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+                if (filasAfectadas == 1)
+                {
+                    respuestaEliminar = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al querer eliminar el paciente.", ex);
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
+
+            return respuestaEliminar;
+        }
+
+
         #endregion
-
-
 
 
     }

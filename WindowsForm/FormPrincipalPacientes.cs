@@ -33,6 +33,7 @@ namespace WindowsForm
 
         #endregion
 
+
         #region Constructores
 
         /// <summary>
@@ -59,19 +60,14 @@ namespace WindowsForm
         }
         #endregion
 
+
         #region Metodos y eventos
 
-        private void ObtenerListadoPacientes()
-        {
-            accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteUrgencia");
-            accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteConsultorioExterno");
-            accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteHospitalizado");
-        }
+        #region Cargar form y listado pacientes
 
         /// <summary>
-        /// Maneja el evento de carga del formulario principal de pacientes.
+        /// Maneja el evento de carga del formulario principal de pacientes, y obtiene la lista de pacientes desde la base de datos. 
         /// Establece el texto del label lblUsuario con la información del usuario logueado.
-        /// Muestra un cuadro de diálogo de apertura de archivo (OpenFileDialog) para cargar datos de pacientes solamente desde un archivo XML (patrón de filtro con *.xml).
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
@@ -80,7 +76,9 @@ namespace WindowsForm
             this.lblUsuario.Text = this.usuarioLogueado.ToString();
             if (accesobd is not null)
             {
-                ObtenerListadoPacientes();
+                this.accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteUrgencia");
+                this.accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteConsultorioExterno");
+                this.accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteHospitalizado");
             }
             this.ActualizarListadoPacientes();
 
@@ -117,7 +115,10 @@ namespace WindowsForm
             */
         }
 
+        #endregion
 
+
+        #region Agregar paciente
         /// <summary>
         /// Maneja el evento de clic en el botón "Agregar", abriendo un formulario específico para agregar un paciente, según el tipo de ingreso seleccionado.
         /// Agrega el paciente al listado de pacientes y actualiza el visor del listBox, si la operación del formulario es exitosa.
@@ -186,6 +187,10 @@ namespace WindowsForm
 
         }
 
+        #endregion
+
+
+        #region Modificar paciente
         /// <summary>
         /// Maneja el evento de clic en el botón "Modificar", abriendo un formulario específico para modificar un paciente según el Item seleccionado en el listBox.
         /// Actualiza la información del paciente en el listado si la operación es exitosa.
@@ -195,60 +200,62 @@ namespace WindowsForm
         private void btnModificar_Click(object sender, EventArgs e)
         {
             int indexSeleccionado = this.lstPacientes.SelectedIndex;
-            object itemSeleccionado = this.lstPacientes.SelectedItem;
 
             if (indexSeleccionado != -1)
             {
-                if (itemSeleccionado is PacienteUrgencia)
-                {
-                    PacienteUrgencia pacienteUrgencia = (PacienteUrgencia)this.listaPacientes.Pacientes[lstPacientes.SelectedIndex];
-                    int idPacienteUrgencia = this.listaPacientes.Pacientes[lstPacientes.SelectedIndex].Id;
-                    FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia(pacienteUrgencia, idPacienteUrgencia);
-                    formPacienteUrgencia.ShowDialog();
 
-                    if (formPacienteUrgencia.DialogResult == DialogResult.OK)
+                Paciente paciente = this.listaPacientes.Pacientes[indexSeleccionado];
+
+                if (this.accesobd is not null)
+                { 
+
+                    if (paciente is PacienteUrgencia)
                     {
-                        if (accesobd.ModificarPaciente(pacienteUrgencia))
+                        FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia((PacienteUrgencia)paciente);
+                        formPacienteUrgencia.ShowDialog();
+
+                        if (formPacienteUrgencia.DialogResult == DialogResult.OK)
                         {
-                            this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteUrgencia.PacienteUrgencia;
-                            this.ActualizarListadoPacientes();
+                            if (this.accesobd.ModificarPaciente(paciente))
+                            {
+                                this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteUrgencia.PacienteUrgencia;
+                                this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            }
+                        }
+
+                    }
+                    else if (paciente is PacienteConsultorioExterno)
+                    {
+                        FormPacienteConsultorioExterno formPacienteConsultorioExterno = new FormPacienteConsultorioExterno((PacienteConsultorioExterno)paciente);
+                        formPacienteConsultorioExterno.ShowDialog();
+
+                        if (formPacienteConsultorioExterno.DialogResult == DialogResult.OK)
+                        {
+                            if (this.accesobd.ModificarPaciente(paciente))
+                            {
+                                this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
+                                this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            }
+                        }
+
+                    }
+                    else if (paciente is PacienteHospitalizado)
+                    {
+                        FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado((PacienteHospitalizado)paciente);
+                        formPacienteHospitalizado.ShowDialog();
+
+                        if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
+                        {
+                            if (this.accesobd.ModificarPaciente(paciente))
+                            {
+                                this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteHospitalizado.PacienteHospitalizado;
+                                this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            }
                         }
                     }
-
                 }
-                else if (itemSeleccionado is PacienteConsultorioExterno)
-                {
-                    PacienteConsultorioExterno pacienteConsultorioExterno = (PacienteConsultorioExterno)this.listaPacientes.Pacientes[lstPacientes.SelectedIndex];
 
-                    FormPacienteConsultorioExterno formPacienteConsultorioExterno = new FormPacienteConsultorioExterno(pacienteConsultorioExterno);
-                    formPacienteConsultorioExterno.ShowDialog();
-
-                    if (formPacienteConsultorioExterno.DialogResult == DialogResult.OK)
-                    {
-                        if (accesobd.ModificarPaciente(pacienteConsultorioExterno))
-                        {
-                            this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
-                            this.ActualizarListadoPacientes();
-                        }
-                    }
-
-                }
-                else if (itemSeleccionado is PacienteHospitalizado)
-                {
-                    PacienteHospitalizado pacienteHospitalizado = (PacienteHospitalizado)this.listaPacientes.Pacientes[lstPacientes.SelectedIndex];
-
-                    FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado(pacienteHospitalizado);
-                    formPacienteHospitalizado.ShowDialog();
-
-                    if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
-                    {
-                        if (accesobd.ModificarPaciente(pacienteHospitalizado))
-                        {
-                            this.listaPacientes.Pacientes[lstPacientes.SelectedIndex] = formPacienteHospitalizado.PacienteHospitalizado;
-                            this.ActualizarListadoPacientes();
-                        }
-                    }
-                }
+                this.ActualizarListadoPacientes();
             }
             else
             {
@@ -256,6 +263,10 @@ namespace WindowsForm
             }
         }
 
+        #endregion
+
+
+        #region Eliminar Paciente
         /// <summary>
         /// Maneja el evento de clic en el botón "Eliminar", pidiendo confirmación para eliminar un paciente y lo elimina del listado si se confirma.
         /// </summary>
@@ -271,8 +282,14 @@ namespace WindowsForm
 
                 if (rtaEliminar == DialogResult.Yes)
                 {
-                    this.listaPacientes.Pacientes.RemoveAt(indexSeleccionado);
-                    this.ActualizarListadoPacientes();
+                    if (this.accesobd is not null)
+                    {
+                        if (this.accesobd.EliminarPaciente(this.listaPacientes.Pacientes[indexSeleccionado]))
+                        {
+                            this.listaPacientes.Pacientes.RemoveAt(indexSeleccionado);
+                            this.ActualizarListadoPacientes();
+                        }
+                    }
                 }
             }
             else
@@ -281,26 +298,10 @@ namespace WindowsForm
             }
         }
 
-        /// <summary>
-        /// Maneja el evento de clic en la etiqueta "Detalles".
-        /// Muestra los detalles de un paciente seleccionado si hay un item seleccionado del listBox.
-        /// </summary>
-        /// <param name="sender">Representa el objeto que genera el evento.</param>
-        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic en la etiqueta "Detalles".</param>
-        private void lblDetalles_Click(object sender, EventArgs e)
-        {
-            int indexSeleccionado = this.lstPacientes.SelectedIndex;
+        #endregion
 
-            if (indexSeleccionado != -1)
-            {
-                MessageBox.Show(this.listaPacientes.Pacientes[indexSeleccionado].MostrarDetallesPaciente());
-            }
-            else
-            {
-                MessageBox.Show("No se ha seleccionado ningún paciente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
+        #region Ordenar lista
         /// <summary>
         /// Maneja el evento de clic en el botón "Ordenar".
         /// Ordena la lista de pacientes según los criterios de orden seleccionados por el usuario en los comboBox correspondientes, a partir de los métodos para el ordenamiento desarrollados en la clase Clinica.
@@ -347,10 +348,16 @@ namespace WindowsForm
             }
         }
 
+
+        #endregion
+
+
+        #region Actualizar lista
         /// <summary>
         /// Actualiza el listado de pacientes en el ListBox del formulario.
         /// Limpia la lista actual y agrega cada paciente de la lista de pacientes a la clínica.
         /// </summary>
+        
         private void ActualizarListadoPacientes()
         {
             this.lstPacientes.Items.Clear();
@@ -360,6 +367,62 @@ namespace WindowsForm
             }
         }
 
+        #endregion
+
+
+        #region Mostrar detalles de datos de los pacientes
+        /// <summary>
+        /// Maneja el evento de clic en la etiqueta "Detalles".
+        /// Muestra los detalles de un paciente seleccionado si hay un item seleccionado del listBox.
+        /// </summary>
+        /// <param name="sender">Representa el objeto que genera el evento.</param>
+        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic en la etiqueta "Detalles".</param>
+        private void lblDetalles_Click(object sender, EventArgs e)
+        {
+            int indexSeleccionado = this.lstPacientes.SelectedIndex;
+
+            if (indexSeleccionado != -1)
+            {
+                MessageBox.Show(this.listaPacientes.Pacientes[indexSeleccionado].MostrarDetallesPaciente());
+            }
+            else
+            {
+                MessageBox.Show("No se ha seleccionado ningún paciente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
+
+
+        #region Mostrar historial usuarios
+        /// <summary>
+        /// Maneja el evento de clic en la etiqueta "Datos de Usuario".
+        /// Muestra los datos del usuario logueado correctamente a través del forLogin, en un cuadro de diálogo, si es que encuentra el archivo "usuarios.log".
+        /// </summary>
+        /// <param name="sender">Representa el objeto que genera el evento.</param>
+        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic esta etiqueta.</param>
+        private void lblDatosUsuario_Click(object sender, EventArgs e)
+        {
+            string pathUsuarioLog = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            pathUsuarioLog += @"\Usuarios";
+            Encoding miCodificacion = Encoding.UTF8;
+
+            try
+            {
+                using (StreamReader lectorUsuario = new StreamReader(pathUsuarioLog + @"\usuarios.log", miCodificacion))
+                {
+                    MessageBox.Show(lectorUsuario.ReadToEnd());
+                }
+            }
+            catch (Exception excepcion)
+            {
+                MessageBox.Show(excepcion.Message);
+            }
+        }
+        #endregion
+
+
+        #region Eventos MouseMove y MouseLeave
         /// <summary>
         /// Maneja el evento de movimiento del mouse sobre la etiqueta "Detalles".
         /// Cambia la fuente y el color del label lblDetalles cuando el mouse se mueve sobre el control.
@@ -408,30 +471,10 @@ namespace WindowsForm
             this.lblDatosUsuario.ForeColor = SystemColors.ControlText;
         }
 
-        /// <summary>
-        /// Maneja el evento de clic en la etiqueta "Datos de Usuario".
-        /// Muestra los datos del usuario logueado correctamente a través del forLogin, en un cuadro de diálogo, si es que encuentra el archivo "usuarios.log".
-        /// </summary>
-        /// <param name="sender">Representa el objeto que genera el evento.</param>
-        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic esta etiqueta.</param>
-        private void lblDatosUsuario_Click(object sender, EventArgs e)
-        {
-            string pathUsuarioLog = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            pathUsuarioLog += @"\Usuarios";
-            Encoding miCodificacion = Encoding.UTF8;
+        #endregion
 
-            try
-            {
-                using (StreamReader lectorUsuario = new StreamReader(pathUsuarioLog + @"\usuarios.log", miCodificacion))
-                {
-                    MessageBox.Show(lectorUsuario.ReadToEnd());
-                }
-            }
-            catch (Exception excepcion)
-            {
-                MessageBox.Show(excepcion.Message);
-            }
-        }
+
+        #region Cerrar form
 
         /// <summary>
         /// Maneja el evento de cierre del formulario principal de pacientes, pidiendo confirmación al usuario antes de cerrar la aplicación.
@@ -475,6 +518,8 @@ namespace WindowsForm
             //}
             */
         }
+
+        #endregion
 
         #endregion
 
