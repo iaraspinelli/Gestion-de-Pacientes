@@ -174,7 +174,23 @@ namespace Entidades
         /// <returns>Retorna true si los objetos PacienteHospitalizado son iguales.</returns>
         public static bool operator ==(PacienteHospitalizado pacienteHosp1, PacienteHospitalizado pacienteHosp2)
         {
-            return ((Paciente)pacienteHosp1).Equals(pacienteHosp2);
+            bool rta = false;
+
+            if (((object)pacienteHosp1) == null && ((object)pacienteHosp2) == null)
+            {
+                rta = true;
+            }
+            else
+            {
+                if (((object)pacienteHosp1) != null && ((object)pacienteHosp2) != null)
+                {
+                    if (pacienteHosp1.Id == pacienteHosp2.Id && pacienteHosp2.Dni == pacienteHosp2.Dni)
+                    {
+                        rta = true;
+                    }
+                }
+            }
+            return rta;
         }
 
         /// <summary>

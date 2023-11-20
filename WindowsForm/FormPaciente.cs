@@ -45,24 +45,6 @@ namespace WindowsForm
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        /// <summary>
-        /// Constructor que permite inicializar un formulario con un objeto Paciente preexistente.
-        /// Verificar que se haya cargado el formulario con los campos completos antes de proceder.
-        /// </summary>
-        /// <param name="paciente">Representa el objeto Paciente que se asocia al formulario.</param>
-        //public FormPaciente(Paciente paciente) : this()
-        //{
-        //    if (this.VerificarCamposFormulario())
-        //    {
-        //        this.paciente = paciente;
-        //        this.txtNombre.Text = paciente.Nombre;
-        //        this.txtApellido.Text = paciente.Apellido;
-        //        this.txtEdad.Text = paciente.Edad.ToString();
-        //        this.txtDni.Text = paciente.Dni.ToString();
-        //        this.txtCobertura.Text = paciente.Cobertura;
-        //    }
-        //}
-
         #endregion
 
         #region Metodos y eventos
@@ -145,7 +127,6 @@ namespace WindowsForm
         {
             if (this.paciente is not null)
             {
-                //this.paciente = paciente;
                 this.txtNombre.Text = paciente.Nombre;
                 this.txtApellido.Text = paciente.Apellido;
                 this.txtEdad.Text = paciente.Edad.ToString();
