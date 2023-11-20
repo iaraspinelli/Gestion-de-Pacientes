@@ -38,6 +38,7 @@ namespace WindowsForm
 
         /// <summary>
         /// Constructor clase FormPrincipalPacientes, permite inicializar el componente form, centrarlo en el medio de la pantalla, instanciar un objeto Clinica, y guardar en un atributo los datos del usuario logueado correctamente a partir del formLogin.
+        /// Establece la visibilidad o invisibilidad de los controles, según el perfil del usuario logueado para restringir sus acciones dentro de la app.
         /// </summary>
         public FormPrincipalPacientes(UsuarioLogin usuarioLogueado)
         {

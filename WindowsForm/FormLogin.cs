@@ -111,6 +111,12 @@ namespace WindowsForm
         /// </summary>
         /// <param name="usuarioVerificado">Representa un bool que indica true si el usuario ha sido verificado con éxito en el evento btnLogin_Click.</param>
         /// <param name="usuarioLogueado">Representa el objeto referente al usuario logueado.</param>
+        /// <exception cref="UsuariosExcepcion">
+        /// Se lanza en caso de cualquier error específico relacionado con la carga del historial de usuarios.
+        /// Las excepciones específicas que se pueden lanzar son:
+        /// - <see cref="DirectoryNotFoundException"/>: El directorio especificado no se encuentra.
+        /// - <see cref="Exception"/>: Otras excepciones no manejadas de manera específica.
+        /// </exception>
         private void GuardarUsuarioLogueado(bool usuarioVerificado, UsuarioLogin usuarioLogueado)
         {
             if (usuarioVerificado == true)
@@ -136,9 +142,13 @@ namespace WindowsForm
                         escritorLogin.WriteLine(datosUsuarioLogueado.ToString());
                     }
                 }
-                catch(Exception e)
+                catch (DirectoryNotFoundException dirNoEncontradoEx)
                 {
-                    MessageBox.Show(e.Message);
+                    throw new UsuariosExcepcion($"Error de directorio no encontrado: {dirNoEncontradoEx.Message}", dirNoEncontradoEx);
+                }
+                catch (Exception ex)
+                {
+                    throw new UsuariosExcepcion($"Error desconocido: {ex.Message}", ex);
                 }
             }
         }

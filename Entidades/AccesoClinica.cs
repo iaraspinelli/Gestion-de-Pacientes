@@ -77,11 +77,11 @@ namespace Entidades
             }
             catch (Exception ex)
             {
-                throw new Exception("Error en la prueba de conexión.", ex);
+                throw new ConexionSqlException("Error durante la prueba de conexión.", ex);
             }
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                 {
                     this.conexion.Close();
                 }
@@ -218,7 +218,7 @@ namespace Entidades
             return listaPacienteHospitalizado;
         }
 
-        
+
         /// <summary>
         /// Obtiene la lista de pacientes desde la base de datos, a traves del lectorSql para ejecutar una consulta Sql según la tabla especificada, y la agrega a la lista proporcionada.
         /// </summary>
@@ -227,7 +227,12 @@ namespace Entidades
         /// <returns>
         /// Devuelve true si se obtuvo y agregó la lista de pacientes correctamente; de lo contrario, devuelve false.
         /// </returns>
-        /// <exception cref = "Exception" > Se lanza en caso de error durante la obtención o agregado de la lista de pacientes.
+        /// <exception cref="ConexionSqlException">
+        /// Se lanza en caso de cualquier error durante la obtención de la lista de pacientes.
+        /// Las excepciones específicas lanzadas son:
+        /// - <see cref="SqlException"/>: Error relacionado con una operación SQL.
+        /// - <see cref="InvalidOperationException"/>: Error relacionado cuando ocurre una operación no válida en el estado actual del objeto.
+        /// - <see cref="Exception"/>: Error relacionado con otras excepciones no manejadas de manera específica.
         /// </exception>
         public bool ObtenerListaPacientes(List<Paciente> listaPacientes, string tablaPaciente)
         {
@@ -259,14 +264,21 @@ namespace Entidades
                 this.lectorSql.Close();
 
             }
+            catch (SqlException sqlEx)
+            {
+                throw new ConexionSqlException("Error de SQL al obtener lista de pacientes.", sqlEx);
+            }
+            catch (InvalidOperationException operacionInvalidaEx)
+            {
+                throw new ConexionSqlException("Operación no válida al obtener lista de pacientes.", operacionInvalidaEx);
+            }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener lista de pacientes.", ex);
+                throw new ConexionSqlException("Error al obtener lista de pacientes.", ex);
             }
-
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                 {
                     this.conexion.Close();
                 }
@@ -335,7 +347,13 @@ namespace Entidades
         /// <returns>
         /// Devuelve true si se pudo establecer el ID correctamente; de lo contrario, devuelve false.
         /// </returns>
-        /// <exception cref="Exception">Se lanza en caso de error al obtener el ID del paciente.</exception>
+        /// <exception cref="ConexionSqlException">
+        /// Se lanza en caso de cualquier error durante la obtención del id del paciente.
+        /// Las excepciones específicas lanzadas son:
+        /// - <see cref="SqlException"/>: Error relacionado con una operación SQL.
+        /// - <see cref="InvalidOperationException"/>: Error relacionado cuando ocurre una operación no válida en el estado actual del objeto.
+        /// - <see cref="Exception"/>: Error relacionado con otras excepciones no manejadas de manera específica.
+        /// </exception>
 
         public bool EstablecerId(Paciente paciente, string tablaPaciente)
         {
@@ -354,15 +372,21 @@ namespace Entidades
                     }
                 }
             }
-
+            catch (SqlException sqlEx)
+            {
+                throw new ConexionSqlException("Error de SQL al obtener el Id del paciente", sqlEx);
+            }
+            catch (InvalidOperationException operacionInvalidaEx)
+            {
+                throw new ConexionSqlException("Operación no válida al obtener el Id del paciente.", operacionInvalidaEx);
+            }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener el id del paciente", ex);
+                throw new ConexionSqlException("Error al obtener el Id del paciente.", ex);
             }
-
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                     this.conexion.Close();
             }
 
@@ -377,7 +401,12 @@ namespace Entidades
         /// </summary>
         /// <param name="paciente">El objeto Paciente a agregar.</param>
         /// <returns>Devuelve true si el paciente se agregó correctamente; de lo contrario, false.</returns>
-        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// <exception cref="ConexionSqlException">
+        /// Se lanza en caso de cualquier error durante el agregado de un paciente.
+        /// Las excepciones específicas lanzadas son:
+        /// - <see cref="SqlException"/>: Error relacionado con una operación SQL.
+        /// - <see cref="InvalidOperationException"/>: Error relacionado cuando ocurre una operación no válida en el estado actual del objeto.
+        /// - <see cref="Exception"/>: Error relacionado con otras excepciones no manejadas de manera específica.
         /// </exception>
         public bool AgregarPaciente(Paciente paciente)
         {
@@ -416,13 +445,21 @@ namespace Entidades
                 }
 
             }
+            catch (SqlException sqlEx)
+            {
+                throw new ConexionSqlException("Error de SQL al agregar un paciente a la tabla de la base de datos Sql.", sqlEx);
+            }
+            catch (InvalidOperationException operacionInvalidaEx)
+            {
+                throw new ConexionSqlException("Operación no válida al agregar un paciente a la tabla de la base de datos Sql.", operacionInvalidaEx);
+            }
             catch (Exception ex)
             {
-                throw new Exception("No se ha podido agregar el paciente.", ex);
+                throw new ConexionSqlException("Error al agregar un paciente a la tabla de la base de datos Sql.", ex);
             }
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                 {
                     this.conexion.Close();
                 }
@@ -441,7 +478,12 @@ namespace Entidades
         /// </summary>
         /// <param name="paciente">El objeto Paciente a modificar.</param>
         /// <returns>Devuelve true si el paciente se modificó correctamente; de lo contrario, false.</returns>
-        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// <exception cref="ConexionSqlException">
+        /// Se lanza en caso de cualquier error durante la modificación de un paciente.
+        /// Las excepciones específicas lanzadas son:
+        /// - <see cref="SqlException"/>: Error relacionado con una operación SQL.
+        /// - <see cref="InvalidOperationException"/>: Error relacionado cuando ocurre una operación no válida en el estado actual del objeto.
+        /// - <see cref="Exception"/>: Error relacionado con otras excepciones no manejadas de manera específica.
         /// </exception>
         public bool ModificarPaciente(Paciente paciente, int id)
         {
@@ -479,13 +521,21 @@ namespace Entidades
                     respuestaModificar = true;
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                throw new ConexionSqlException("Error de SQL al modificar un paciente de la tabla de la base de datos Sql.", sqlEx);
+            }
+            catch (InvalidOperationException operacionInvalidaEx)
+            {
+                throw new ConexionSqlException("Operación no válida al modificar un paciente de la tabla de la base de datos Sql.", operacionInvalidaEx);
+            }
             catch (Exception ex)
             {
-                throw new Exception("No se ha podido modificar el paciente.", ex);
+                throw new ConexionSqlException("Error al modificar un paciente de la tabla de la base de datos Sql.", ex);
             }
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                 {
                     this.conexion.Close();
                 }
@@ -505,7 +555,12 @@ namespace Entidades
         /// </summary>
         /// <param name="paciente">El objeto Paciente a eliminar.</param>
         /// <returns>Devuelve true si el paciente se eliminó correctamente; de lo contrario, false.</returns>
-        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// <exception cref="ConexionSqlException">
+        /// Se lanza en caso de cualquier error durante la eliminación de un paciente.
+        /// Las excepciones específicas lanzadas son:
+        /// - <see cref="SqlException"/>: Error relacionado con una operación SQL.
+        /// - <see cref="InvalidOperationException"/>: Error relacionado cuando ocurre una operación no válida en el estado actual del objeto.
+        /// - <see cref="Exception"/>: Error relacionado con otras excepciones no manejadas de manera específica.
         /// </exception>
         public bool EliminarPaciente(Paciente paciente)
         {
@@ -538,13 +593,21 @@ namespace Entidades
                     respuestaEliminar = true;
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                throw new ConexionSqlException("Error de SQL al eliminar un paciente de la tabla de la base de datos Sql.", sqlEx);
+            }
+            catch (InvalidOperationException operacionInvalidaEx)
+            {
+                throw new ConexionSqlException("Operación no válida al eliminar un paciente de la tabla de la base de datos Sql.", operacionInvalidaEx);
+            }
             catch (Exception ex)
             {
-                throw new Exception("No se ha podido eliminar el paciente.", ex);
+                throw new ConexionSqlException("Error al eliminar un paciente de la tabla de la base de datos Sql.", ex);
             }
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                 {
                     this.conexion.Close();
                 }
