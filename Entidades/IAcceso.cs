@@ -13,6 +13,14 @@ namespace Entidades
 
         SqlDataReader EjecutarLector(string sentencia);
 
+        List<PacienteUrgencia> ObtenerPacienteUrgencia(SqlDataReader lectorSql);
+
+        List<PacienteConsultorioExterno> ObtenerPacienteConsultorioExterno(SqlDataReader lectorSql);
+
+        List<PacienteHospitalizado> ObtenerPacienteHospitalizado(SqlDataReader lectorSql);
+
+        bool ObtenerListaPacientes(List<Paciente> listaPacientes, string tablaPaciente);
+        
         void GenerarParametrosPaciente(Paciente paciente, SqlCommand comando);
 
         void GenerarParametrosPacienteUrgencia(PacienteUrgencia pacienteUrgencia, SqlCommand comando);
@@ -20,6 +28,8 @@ namespace Entidades
         void GenerarParametrosPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno, SqlCommand comando);
 
         void GenerarParametrosPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, SqlCommand comando);
+
+        bool EstablecerId(Paciente paciente, string tablaPaciente);
 
         bool AgregarPaciente(Paciente paciente);
 

@@ -53,14 +53,6 @@ namespace WindowsForm
         {
             this.pacienteHospitalizado = pacienteHospitalizado;
             base.paciente = this.pacienteHospitalizado;
-            //idPaciente = pacienteHospitalizado.Id;
-            //base.txtNombre.Text = pacienteHospitalizado.Nombre;
-            //base.txtApellido.Text = pacienteHospitalizado.Apellido;
-            //base.txtEdad.Text = pacienteHospitalizado.Edad.ToString();
-            //base.txtDni.Text = pacienteHospitalizado.Dni.ToString();
-            //base.txtCobertura.Text = pacienteHospitalizado.Cobertura;
-            //this.dateTimeFechaIngreso.Value = pacienteHospitalizado.FechaInternacion;
-            //this.txtNumHabitacion.Text = pacienteHospitalizado.NumeroHabitacion.ToString();
         }
 
         #endregion

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Data.SqlClient;
+using System.Numerics;
 
 namespace Entidades
 {
@@ -102,14 +104,22 @@ namespace Entidades
         /// </returns>
         public SqlDataReader EjecutarLector(string sentencia)
         {
-            this.comando = new SqlCommand();
-            this.comando.CommandType = System.Data.CommandType.Text;
-            this.comando.CommandText = sentencia;
+            try
+            {
+                this.comando = new SqlCommand();
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.CommandText = sentencia;
 
-            this.comando.Connection = this.conexion;
-            this.conexion.Open();
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
 
-            return this.comando.ExecuteReader();
+                return this.comando.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al ejecutar el lector SQL.", ex);
+            }
+            
         }
 
         #endregion
@@ -312,6 +322,52 @@ namespace Entidades
             comando.Parameters.AddWithValue("@numeroHabitacion", pacienteHospitalizado.NumeroHabitacion);
         }
 
+        #endregion
+
+
+        #region Obtener id
+
+        /// <summary>
+        /// Establece el ID del paciente consultando la base de datos según el nombre y la tabla especificados.
+        /// </summary>
+        /// <param name="paciente">Objeto de tipo Paciente al cual se le establecerá el ID.</param>
+        /// <param name="tablaPaciente">Nombre de la tabla de la base de datos donde se realizará la consulta.</param>
+        /// <returns>
+        /// Devuelve true si se pudo establecer el ID correctamente; de lo contrario, devuelve false.
+        /// </returns>
+        /// <exception cref="Exception">Se lanza en caso de error al obtener el ID del paciente.</exception>
+
+        public bool EstablecerId(Paciente paciente, string tablaPaciente)
+        {
+            bool respuestaId = false;
+
+            try
+            {
+                string sentencia = $"SELECT id FROM {tablaPaciente} WHERE nombre = '{paciente.Nombre}'";
+
+                using (SqlDataReader lectorSql = EjecutarLector(sentencia))
+                {
+                    if (lectorSql.Read())
+                    {
+                        paciente.Id = (int)lectorSql["id"];
+                        respuestaId = true;
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el id del paciente", ex);
+            }
+
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                    this.conexion.Close();
+            }
+
+            return respuestaId;
+        }
         #endregion
 
 

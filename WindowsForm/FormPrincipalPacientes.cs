@@ -73,7 +73,7 @@ namespace WindowsForm
         private void FormPrincipalPacientes_Load(object sender, EventArgs e)
         {
             this.lblUsuario.Text = this.usuarioLogueado.ToString();
-            if (accesobd is not null)
+            if (this.accesobd is not null)
             {
                 this.accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteUrgencia");
                 this.accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteConsultorioExterno");
@@ -113,6 +113,7 @@ namespace WindowsForm
 
                             if (accesobd.AgregarPaciente(pacienteUrgencia))
                             {
+                                this.accesobd.EstablecerId(pacienteUrgencia, "pacienteUrgencia");
                                 this.listaPacientes += pacienteUrgencia;
                             }
                         }
@@ -128,6 +129,7 @@ namespace WindowsForm
 
                             if (accesobd.AgregarPaciente(pacienteConsultorioExterno))
                             {
+                                this.accesobd.EstablecerId(pacienteConsultorioExterno, "pacienteConsultorioExterno");
                                 this.listaPacientes += pacienteConsultorioExterno;
                             }
                         }
@@ -143,6 +145,7 @@ namespace WindowsForm
 
                             if (accesobd.AgregarPaciente(pacienteHospitalizado))
                             {
+                                this.accesobd.EstablecerId(pacienteHospitalizado, "pacienteHospitalizado");
                                 this.listaPacientes += pacienteHospitalizado;
                             }
                         }

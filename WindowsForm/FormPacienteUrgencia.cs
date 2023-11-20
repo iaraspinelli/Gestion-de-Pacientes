@@ -52,13 +52,6 @@ namespace WindowsForm
         {
             this.pacienteUrgencia = pacienteUrgencia;
             base.paciente = this.pacienteUrgencia;
-            //base.txtNombre.Text = pacienteUrgencia.Nombre;
-            //base.txtApellido.Text = pacienteUrgencia.Apellido;
-            //base.txtEdad.Text = pacienteUrgencia.Edad.ToString();
-            //base.txtDni.Text = pacienteUrgencia.Dni.ToString();
-            //base.txtCobertura.Text = pacienteUrgencia.Cobertura;
-            //this.dateTimeFechaIngreso.Value = pacienteUrgencia.FechaIngreso;
-            //this.cboEspecialidad.SelectedItem = pacienteUrgencia.EspecialidadUrgencia;
         }
         #endregion
 

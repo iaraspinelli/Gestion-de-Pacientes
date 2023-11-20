@@ -54,13 +54,6 @@ namespace WindowsForm
         {
             this.pacienteConsultorioExterno = pacienteConsultorioExterno;
             base.paciente = this.pacienteConsultorioExterno;
-            //base.txtNombre.Text = pacienteConsultorioExterno.Nombre;
-            //base.txtApellido.Text = pacienteConsultorioExterno.Apellido;
-            //base.txtEdad.Text = pacienteConsultorioExterno.Edad.ToString();
-            //base.txtDni.Text = pacienteConsultorioExterno.Dni.ToString();
-            //base.txtCobertura.Text = pacienteConsultorioExterno.Cobertura;
-            //this.dateTimeFechaTurno.Value = pacienteConsultorioExterno.FechaTurno;
-            //this.cboEspecialidad.SelectedItem = pacienteConsultorioExterno.Especialidad;
         }
 
         #endregion
