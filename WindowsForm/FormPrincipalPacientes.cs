@@ -216,11 +216,11 @@ namespace WindowsForm
 
                         if (formPacienteUrgencia.DialogResult == DialogResult.OK)
                         {
-                            if (this.accesobd.ModificarPaciente(paciente))
-                            {
-                                this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteUrgencia.PacienteUrgencia;
-                                this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
-                            }
+                            //if (this.accesobd.ModificarPaciente(paciente))
+                            //{
+                            //    this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteUrgencia.PacienteUrgencia;
+                            //    this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            //}
                         }
 
                     }
@@ -231,31 +231,35 @@ namespace WindowsForm
 
                         if (formPacienteConsultorioExterno.DialogResult == DialogResult.OK)
                         {
-                            if (this.accesobd.ModificarPaciente(paciente))
-                            {
-                                this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
-                                this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
-                            }
+                            //if (this.accesobd.ModificarPaciente(paciente))
+                            //{
+                            //    this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
+                            //    this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            //}
                         }
 
                     }
                     else if (paciente is PacienteHospitalizado)
                     {
-                        FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado((PacienteHospitalizado)paciente);
+                        FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado((PacienteHospitalizado)paciente, paciente.Id);
                         formPacienteHospitalizado.ShowDialog();
 
                         if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
                         {
-                            if (this.accesobd.ModificarPaciente(paciente))
+                            PacienteHospitalizado pacienteHospitalizado = formPacienteHospitalizado.PacienteHospitalizado;
+
+
+                            if (this.accesobd.ModificarPacienteHospitalizado(pacienteHospitalizado))
                             {
                                 this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteHospitalizado.PacienteHospitalizado;
                                 this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                                this.ActualizarListadoPacientes();
                             }
                         }
                     }
                 }
 
-                this.ActualizarListadoPacientes();
+                //this.ActualizarListadoPacientes();
             }
             else
             {

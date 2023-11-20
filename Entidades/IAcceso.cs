@@ -27,7 +27,7 @@ namespace Entidades
 
         bool AgregarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado);
 
-        bool ModificarPaciente(Paciente paciente);
+        bool ModificarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado);
 
         bool EliminarPaciente(Paciente paciente);
 

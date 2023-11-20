@@ -49,15 +49,16 @@ namespace WindowsForm
         /// <summary>
         /// Constructor que permite inicializar un formulario con un objeto PacienteHospitalizado preexistente, que va a permitir modidificar los datos de ese paciente luego.
         /// <param name="pacienteHospitalizado">Representa el objeto PacientepacienteHospitalizado que se asocia al formulario.</param>
-        public FormPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado) : this()
+        public FormPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, int idPaciente) : this()
         {
-            base.txtNombre.Text = pacienteHospitalizado.Nombre;
-            base.txtApellido.Text = pacienteHospitalizado.Apellido;
-            base.txtEdad.Text = pacienteHospitalizado.Edad.ToString();
-            base.txtDni.Text = pacienteHospitalizado.Dni.ToString();
-            base.txtCobertura.Text = pacienteHospitalizado.Cobertura;
-            this.dateTimeFechaIngreso.Value = pacienteHospitalizado.FechaInternacion;
-            this.txtNumHabitacion.Text = pacienteHospitalizado.NumeroHabitacion.ToString();
+            idPaciente = pacienteHospitalizado.Id;
+            //base.txtNombre.Text = pacienteHospitalizado.Nombre;
+            //base.txtApellido.Text = pacienteHospitalizado.Apellido;
+            //base.txtEdad.Text = pacienteHospitalizado.Edad.ToString();
+            //base.txtDni.Text = pacienteHospitalizado.Dni.ToString();
+            //base.txtCobertura.Text = pacienteHospitalizado.Cobertura;
+            //this.dateTimeFechaIngreso.Value = pacienteHospitalizado.FechaInternacion;
+            //this.txtNumHabitacion.Text = pacienteHospitalizado.NumeroHabitacion.ToString();
         }
 
         #endregion
@@ -71,8 +72,8 @@ namespace WindowsForm
         {
             if (base.CargarFormulario())
             {
-                int numHab = int.Parse(this.txtEdad.Text);
-                if ((this.txtNumHabitacion.Text.All(char.IsDigit)) || (numHab > 0 && numHab < 11))
+                int numHab;
+                if (int.TryParse(this.txtNumHabitacion.Text, out numHab) && (numHab > 0 && numHab < 11))
                 {
                     DateTime fechaIngreso = this.dateTimeFechaIngreso.Value;
                     this.pacienteHospitalizado = new PacienteHospitalizado(base.txtNombre.Text, base.txtApellido.Text, int.Parse(base.txtEdad.Text), int.Parse(base.txtDni.Text), base.txtCobertura.Text, fechaIngreso, int.Parse(this.txtNumHabitacion.Text))

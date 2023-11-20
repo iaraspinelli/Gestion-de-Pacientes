@@ -298,8 +298,8 @@ namespace Entidades
         /// <param name="pacienteConsultorioExterno">El objeto PacienteConsultorioExterno del cual se extraerán los parámetros.</param>
         public void GenerarParametrosPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno, SqlCommand comando)
         {
-            this.comando.Parameters.AddWithValue("@fechaTurno", pacienteConsultorioExterno.FechaTurno);
-            this.comando.Parameters.AddWithValue("@especialidad", (int)pacienteConsultorioExterno.Especialidad);
+            comando.Parameters.AddWithValue("@fechaTurno", pacienteConsultorioExterno.FechaTurno);
+            comando.Parameters.AddWithValue("@especialidad", (int)pacienteConsultorioExterno.Especialidad);
         }
 
         /// <summary>
@@ -308,8 +308,8 @@ namespace Entidades
         /// <param name="pacienteHospitalizado">El objeto PacienteHospitalizado del cual se extraerán los parámetros.</param>
         public void GenerarParametrosPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, SqlCommand comando)
         {
-            this.comando.Parameters.AddWithValue("@fechaInternacion", pacienteHospitalizado.FechaInternacion);
-            this.comando.Parameters.AddWithValue("@numeroHabitacion", pacienteHospitalizado.NumeroHabitacion);
+            comando.Parameters.AddWithValue("@fechaInternacion", pacienteHospitalizado.FechaInternacion);
+            comando.Parameters.AddWithValue("@numeroHabitacion", pacienteHospitalizado.NumeroHabitacion);
         }
 
         #endregion
@@ -451,44 +451,38 @@ namespace Entidades
 
         #region UPDATE
 
-        public bool ModificarPaciente(Paciente paciente)
+        public bool ModificarPacienteHospitalizado(PacienteHospitalizado paciente)
         {
-            bool respuestaModificar = false;
+            //bool respuestaModificar = false;
+
             try
             {
-                this.comando = new SqlCommand();
-                this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.Parameters.AddWithValue("@id", paciente.Id);
-                GenerarParametrosPaciente(paciente, this.comando);
+                using (SqlConnection connection = new SqlConnection(cadena_conexion))
+                {
+                    connection.Open();
 
-                if (paciente is PacienteUrgencia)
-                {
-                    GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
-                    this.comando.CommandText = $"UPDATE pacienteUrgencia SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaIngreso = @fechaIngreso, especialidadUrgencia = @especialidadUrgencia WHERE id = @id";
-                }
-                else if (paciente is PacienteConsultorioExterno)
-                {
-                    GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
-                    this.comando.CommandText = $"UPDATE pacienteConsultorioExterno SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaTurno=@fechaTurno,especialidad=@especialidad WHERE id = @id";
-                }
-                else if (paciente is PacienteHospitalizado)
-                {
-                    GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
-                    this.comando.CommandText = $"UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id = @id";
-                }
+                    string query = "UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id = @id";
 
-                this.comando.Connection = this.conexion;
-                this.conexion.Open();
+                    using (SqlCommand comando = new SqlCommand(query, connection))
+                    {
+                        comando.Parameters.AddWithValue("@id", paciente.Id);
+                        comando.Parameters.AddWithValue("@nombre", paciente.Nombre);
+                        comando.Parameters.AddWithValue("@apellido", paciente.Apellido);
+                        comando.Parameters.AddWithValue("@edad", paciente.Edad);
+                        comando.Parameters.AddWithValue("@dni", paciente.Dni);
+                        comando.Parameters.AddWithValue("@cobertura", paciente.Cobertura);
+                        comando.Parameters.AddWithValue("@fechaInternacion", paciente.FechaInternacion);
+                        comando.Parameters.AddWithValue("@numeroHabitacion", paciente.NumeroHabitacion);
 
-                int filasAfectadas = this.comando.ExecuteNonQuery();
-                if (filasAfectadas == 1)
-                {
-                    respuestaModificar = true;
+                        int rowsAffected = comando.ExecuteNonQuery();
+
+                        return rowsAffected > 0; // Retorna true si se realizaron cambios en la base de datos.
+                    }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al querer modificar el paciente.", ex);
+                return false;
             }
             finally
             {
@@ -497,8 +491,53 @@ namespace Entidades
                     this.conexion.Close();
                 }
             }
+            //try
+            //{
 
-            return respuestaModificar;
+            //    this.comando = new SqlCommand();
+            //    this.comando.CommandType = System.Data.CommandType.Text;
+            //    this.comando.Parameters.AddWithValue("@id", paciente.Id);
+            //    GenerarParametrosPaciente(paciente, this.comando);
+
+            //    if (paciente is PacienteUrgencia)
+            //    {
+            //        GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
+            //        this.comando.CommandText = "UPDATE pacienteUrgencia SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaIngreso = @fechaIngreso, especialidadUrgencia = @especialidadUrgencia WHERE id = @id";
+            //    }
+            //    else if (paciente is PacienteConsultorioExterno)
+            //    {
+            //        GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
+            //        this.comando.CommandText = "UPDATE pacienteConsultorioExterno SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaTurno=@fechaTurno,especialidad=@especialidad WHERE id = @id";
+            //    }
+            //    else if (paciente is PacienteHospitalizado)
+            //    {
+            //        GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
+            //        this.comando.CommandText = "UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id = @id";
+            //    }
+
+            //    this.comando.Connection = this.conexion;
+            //    this.conexion.Open();
+
+
+            //    int filasAfectadas = this.comando.ExecuteNonQuery();
+            //    if (filasAfectadas > 0)
+            //    {
+            //        respuestaModificar = true;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception("Error al querer modificar el paciente.", ex);
+            //}
+            //finally
+            //{
+            //    if (this.conexion.State == System.Data.ConnectionState.Open)
+            //    {
+            //        this.conexion.Close();
+            //    }
+            //}
+
+            //return respuestaModificar;
         }
 
 
