@@ -389,27 +389,14 @@ namespace WindowsForm
         #region Mostrar historial usuarios
         /// <summary>
         /// Maneja el evento de clic en la etiqueta "Datos de Usuario".
-        /// Muestra los datos del usuario logueado correctamente a través del forLogin, en un cuadro de diálogo, si es que encuentra el archivo "usuarios.log".
+        /// Muestra el formulario de historial de usuarios, en donde se puede ver el historial de usuarios logueados junto con sus datos, que son traidos del archivo "usuarios.log".
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic esta etiqueta.</param>
         private void lblDatosUsuario_Click(object sender, EventArgs e)
         {
-            string pathUsuarioLog = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            pathUsuarioLog += @"\Usuarios";
-            Encoding miCodificacion = Encoding.UTF8;
-
-            try
-            {
-                using (StreamReader lectorUsuario = new StreamReader(pathUsuarioLog + @"\usuarios.log", miCodificacion))
-                {
-                    MessageBox.Show(lectorUsuario.ReadToEnd());
-                }
-            }
-            catch (Exception excepcion)
-            {
-                MessageBox.Show(excepcion.Message);
-            }
+            FormHistorialUsuarios formHistorialUsuarios = new FormHistorialUsuarios();
+            formHistorialUsuarios.ShowDialog();
         }
         #endregion
 
