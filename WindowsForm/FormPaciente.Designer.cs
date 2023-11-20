@@ -183,6 +183,7 @@
             IsMdiContainer = true;
             Name = "FormPaciente";
             Text = "Paciente";
+            Load += FormPaciente_Load;
             ResumeLayout(false);
             PerformLayout();
         }

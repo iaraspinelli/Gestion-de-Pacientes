@@ -64,7 +64,6 @@ namespace WindowsForm
         #region Metodos y eventos
 
         #region Cargar form y listado pacientes
-
         /// <summary>
         /// Maneja el evento de carga del formulario principal de pacientes, y obtiene la lista de pacientes desde la base de datos. 
         /// Establece el texto del label lblUsuario con la información del usuario logueado.
@@ -219,7 +218,7 @@ namespace WindowsForm
                             //if (this.accesobd.ModificarPaciente(paciente))
                             //{
                             //    this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteUrgencia.PacienteUrgencia;
-                            //    this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            //    //this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
                             //}
                         }
 
@@ -234,7 +233,7 @@ namespace WindowsForm
                             //if (this.accesobd.ModificarPaciente(paciente))
                             //{
                             //    this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
-                            //    this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
+                            //    //this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
                             //}
                         }
 

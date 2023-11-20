@@ -50,33 +50,48 @@ namespace WindowsForm
         /// <param name="pacienteUrgencia">Representa el objeto PacientepacienteUrgencia que se asocia al formulario.</param>
         public FormPacienteUrgencia(PacienteUrgencia pacienteUrgencia) : this()
         {
-            base.txtNombre.Text = pacienteUrgencia.Nombre;
-            base.txtApellido.Text = pacienteUrgencia.Apellido;
-            base.txtEdad.Text = pacienteUrgencia.Edad.ToString();
-            base.txtDni.Text = pacienteUrgencia.Dni.ToString();
-            base.txtCobertura.Text = pacienteUrgencia.Cobertura;
-            this.dateTimeFechaIngreso.Value = pacienteUrgencia.FechaIngreso;
-            this.cboEspecialidad.SelectedItem = pacienteUrgencia.EspecialidadUrgencia;
+            this.pacienteUrgencia = pacienteUrgencia;
+            base.paciente = this.pacienteUrgencia;
+            //base.txtNombre.Text = pacienteUrgencia.Nombre;
+            //base.txtApellido.Text = pacienteUrgencia.Apellido;
+            //base.txtEdad.Text = pacienteUrgencia.Edad.ToString();
+            //base.txtDni.Text = pacienteUrgencia.Dni.ToString();
+            //base.txtCobertura.Text = pacienteUrgencia.Cobertura;
+            //this.dateTimeFechaIngreso.Value = pacienteUrgencia.FechaIngreso;
+            //this.cboEspecialidad.SelectedItem = pacienteUrgencia.EspecialidadUrgencia;
         }
         #endregion
 
-            #region Metodos y eventos
+        #region Metodos y eventos
 
-            /// <summary>
-            /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles, obteniendo los valores del enum correspondiente. 
-            /// <param name="sender">Representa el objeto que genera el evento.</param>
-            /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
-            private void FormPacienteUrgencia_Load(object sender, EventArgs e)
+        #region Cargar formulario
+
+        /// <summary>
+        /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles y los datos del pacienteUrgencia en caso de que no sea null.
+        /// <param name="sender">Representa el objeto que genera el evento.</param>
+        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
+        private void FormPacienteUrgencia_Load(object sender, EventArgs e)
         {
             this.cboEspecialidad.DataSource = Enum.GetValues(typeof(EEspecialidadUrgencia));
+
+            if(this.pacienteUrgencia is not null)
+            {
+                this.dateTimeFechaIngreso.Value = pacienteUrgencia.FechaIngreso;
+                this.cboEspecialidad.SelectedItem = pacienteUrgencia.EspecialidadUrgencia;
+            }
         }
+
+        #endregion
+
+
+        #region Aceptar
 
         /// <summary>
         ///  Maneja el evento de clic en el botón "Aceptar", creando un objeto PacienteUrgencia si los datos son válidos. 
         /// </summary>
         protected override void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (base.CargarFormulario())
+            if (base.VerificarCamposFormulario())
             {
                 EEspecialidadUrgencia especialidad = (EEspecialidadUrgencia)this.cboEspecialidad.SelectedItem;
                 DateTime fechaIngreso = this.dateTimeFechaIngreso.Value;
@@ -86,6 +101,7 @@ namespace WindowsForm
             }
         }
 
+        #endregion
 
         #endregion
 

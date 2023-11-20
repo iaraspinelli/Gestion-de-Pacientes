@@ -50,36 +50,29 @@ namespace WindowsForm
         /// Verificar que se haya cargado el formulario con los campos completos antes de proceder.
         /// </summary>
         /// <param name="paciente">Representa el objeto Paciente que se asocia al formulario.</param>
-        public FormPaciente(Paciente paciente) : this()
-        {
-            if (this.CargarFormulario())
-            {
-                this.paciente = paciente;
-                this.txtNombre.Text = paciente.Nombre;
-                this.txtApellido.Text = paciente.Apellido;
-                this.txtEdad.Text = paciente.Edad.ToString();
-                this.txtDni.Text = paciente.Dni.ToString();
-                this.txtCobertura.Text = paciente.Cobertura;
-            }
-        }
+        //public FormPaciente(Paciente paciente) : this()
+        //{
+        //    if (this.VerificarCamposFormulario())
+        //    {
+        //        this.paciente = paciente;
+        //        this.txtNombre.Text = paciente.Nombre;
+        //        this.txtApellido.Text = paciente.Apellido;
+        //        this.txtEdad.Text = paciente.Edad.ToString();
+        //        this.txtDni.Text = paciente.Dni.ToString();
+        //        this.txtCobertura.Text = paciente.Cobertura;
+        //    }
+        //}
 
         #endregion
 
         #region Metodos y eventos
 
-        /// <summary>
-        ///  Maneja el evento de clic en el botón "Aceptar", estableciendo el resultado del formulario como "OK".
-        /// </summary>
-        protected virtual void btnAceptar_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.OK;
-        }
-
+        #region Validaciones de campos
         /// <summary>
         /// Verifica si todos los controles del formulario están completos y si son válidos.
         /// </summary>
         /// <returns>Retorna true si todos los campos están completos y son válidos; sino retorna false.</returns>
-        protected bool CargarFormulario()
+        protected bool VerificarCamposFormulario()
         {
             bool camposCompletos = true;
             foreach (Control item in this.Controls)
@@ -143,6 +136,39 @@ namespace WindowsForm
             }
             return camposCompletos;
         }
+
+        #endregion
+
+
+        #region Cargar formulario
+        protected void FormPaciente_Load(object sender, EventArgs e)
+        {
+            if (this.paciente is not null)
+            {
+                //this.paciente = paciente;
+                this.txtNombre.Text = paciente.Nombre;
+                this.txtApellido.Text = paciente.Apellido;
+                this.txtEdad.Text = paciente.Edad.ToString();
+                this.txtDni.Text = paciente.Dni.ToString();
+                this.txtCobertura.Text = paciente.Cobertura;
+            }
+        }
+
+        #endregion
+
+
+        #region Aceptar
+        /// <summary>
+        ///  Maneja el evento de clic en el botón "Aceptar", estableciendo el resultado del formulario como "OK".
+        /// </summary>
+        /// 
+
+        protected virtual void btnAceptar_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+        }
+
+        #endregion
 
         #endregion
 

@@ -102,6 +102,7 @@
             Controls.Add(lblIngreso);
             Name = "FormPacienteHospitalizado";
             Text = "FormPacienteHospitalizado";
+            Load += FormPacienteHospitalizado_Load;
             Controls.SetChildIndex(txtNombre, 0);
             Controls.SetChildIndex(txtApellido, 0);
             Controls.SetChildIndex(txtEdad, 0);

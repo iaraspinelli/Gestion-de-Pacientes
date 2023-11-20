@@ -52,36 +52,49 @@ namespace WindowsForm
         /// <param name="pacienteConsultorioExterno">Representa el objeto PacientepacienteConsultorioExterno que se asocia al formulario.</param>
         public FormPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno) : this()
         {
-            base.txtNombre.Text = pacienteConsultorioExterno.Nombre;
-            base.txtApellido.Text = pacienteConsultorioExterno.Apellido;
-            base.txtEdad.Text = pacienteConsultorioExterno.Edad.ToString();
-            base.txtDni.Text = pacienteConsultorioExterno.Dni.ToString();
-            base.txtCobertura.Text = pacienteConsultorioExterno.Cobertura;
-            this.dateTimeFechaTurno.Value = pacienteConsultorioExterno.FechaTurno;
-            this.cboEspecialidad.SelectedItem = pacienteConsultorioExterno.Especialidad;
+            this.pacienteConsultorioExterno = pacienteConsultorioExterno;
+            base.paciente = this.pacienteConsultorioExterno;
+            //base.txtNombre.Text = pacienteConsultorioExterno.Nombre;
+            //base.txtApellido.Text = pacienteConsultorioExterno.Apellido;
+            //base.txtEdad.Text = pacienteConsultorioExterno.Edad.ToString();
+            //base.txtDni.Text = pacienteConsultorioExterno.Dni.ToString();
+            //base.txtCobertura.Text = pacienteConsultorioExterno.Cobertura;
+            //this.dateTimeFechaTurno.Value = pacienteConsultorioExterno.FechaTurno;
+            //this.cboEspecialidad.SelectedItem = pacienteConsultorioExterno.Especialidad;
         }
 
         #endregion
 
         #region Metodos
 
+        #region Cargar formulario
         /// <summary>
-        /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles, obteniendo los valores del enum correspondiente. 
+        /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles, y los datos del pacienteConsultorioExterno en caso de que no sea null.
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
         private void FormPacienteConsultorioExterno_Load(object sender, EventArgs e)
         {
             this.cboEspecialidad.DataSource = Enum.GetValues(typeof(EEspecialidad));
 
+            if(this.pacienteConsultorioExterno is not null)
+            {
+                this.dateTimeFechaTurno.Value = pacienteConsultorioExterno.FechaTurno;
+                this.cboEspecialidad.SelectedItem = pacienteConsultorioExterno.Especialidad;
+            }
+
         }
 
+        #endregion
+
+
+        #region Aceptar
         /// <summary>
         ///  Maneja el evento de clic en el botón "Aceptar", creando un objeto PacienteConsultorioExterno si los datos son válidos. 
         /// </summary>
         protected override void btnAceptar_Click(object sender, EventArgs e)
         {
 
-            if (base.CargarFormulario())
+            if (base.VerificarCamposFormulario())
             {
                 EEspecialidad especialidad = (EEspecialidad)this.cboEspecialidad.SelectedItem;
                 DateTime fechaTurno = this.dateTimeFechaTurno.Value;
@@ -90,6 +103,8 @@ namespace WindowsForm
                 this.DialogResult = DialogResult.OK;
             }
         }
+
+        #endregion
 
 
         #endregion

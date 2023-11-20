@@ -51,7 +51,9 @@ namespace WindowsForm
         /// <param name="pacienteHospitalizado">Representa el objeto PacientepacienteHospitalizado que se asocia al formulario.</param>
         public FormPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, int idPaciente) : this()
         {
-            idPaciente = pacienteHospitalizado.Id;
+            this.pacienteHospitalizado = pacienteHospitalizado;
+            base.paciente = this.pacienteHospitalizado;
+            //idPaciente = pacienteHospitalizado.Id;
             //base.txtNombre.Text = pacienteHospitalizado.Nombre;
             //base.txtApellido.Text = pacienteHospitalizado.Apellido;
             //base.txtEdad.Text = pacienteHospitalizado.Edad.ToString();
@@ -65,12 +67,31 @@ namespace WindowsForm
 
         #region Metodos
 
+        #region Cargar Formulario
+
+        /// <summary>
+        /// Maneja el evento de carga del formulario, carga la lista de especialidades disponibles y los datos del pacienteHospitalizado en caso de que no sea null.
+        /// <param name="sender">Representa el objeto que genera el evento.</param>
+        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
+        private void FormPacienteHospitalizado_Load(object sender, EventArgs e)
+        {
+            if (this.pacienteHospitalizado is not null)
+            {
+                this.dateTimeFechaIngreso.Value = pacienteHospitalizado.FechaInternacion;
+                this.txtNumHabitacion.Text = pacienteHospitalizado.NumeroHabitacion.ToString();
+            }
+
+        }
+
+        #endregion
+
+        #region Aceptar
         /// <summary>
         ///  Maneja el evento de clic en el botón "Aceptar", creando un objeto PacienteHospitalizado si los datos son válidos.
         /// </summary>
         protected override void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (base.CargarFormulario())
+            if (base.VerificarCamposFormulario())
             {
                 int numHab;
                 if (int.TryParse(this.txtNumHabitacion.Text, out numHab) && (numHab > 0 && numHab < 11))
@@ -86,6 +107,8 @@ namespace WindowsForm
                 }
             }
         }
+        #endregion
+        
         #endregion
     }
 }
