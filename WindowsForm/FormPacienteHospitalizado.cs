@@ -49,7 +49,7 @@ namespace WindowsForm
         /// <summary>
         /// Constructor que permite inicializar un formulario con un objeto PacienteHospitalizado preexistente, que va a permitir modidificar los datos de ese paciente luego.
         /// <param name="pacienteHospitalizado">Representa el objeto PacientepacienteHospitalizado que se asocia al formulario.</param>
-        public FormPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, int idPaciente) : this()
+        public FormPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado) : this()
         {
             this.pacienteHospitalizado = pacienteHospitalizado;
             base.paciente = this.pacienteHospitalizado;
@@ -99,6 +99,9 @@ namespace WindowsForm
                     DateTime fechaIngreso = this.dateTimeFechaIngreso.Value;
                     this.pacienteHospitalizado = new PacienteHospitalizado(base.txtNombre.Text, base.txtApellido.Text, int.Parse(base.txtEdad.Text), int.Parse(base.txtDni.Text), base.txtCobertura.Text, fechaIngreso, int.Parse(this.txtNumHabitacion.Text))
                         ;
+
+                    paciente = this.pacienteHospitalizado;
+
                     this.DialogResult = DialogResult.OK;
                 }
                 else

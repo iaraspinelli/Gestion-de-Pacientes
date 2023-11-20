@@ -100,6 +100,8 @@ namespace WindowsForm
                 DateTime fechaTurno = this.dateTimeFechaTurno.Value;
                 this.pacienteConsultorioExterno = new PacienteConsultorioExterno(base.txtNombre.Text, base.txtApellido.Text, int.Parse(base.txtEdad.Text), int.Parse(base.txtDni.Text), base.txtCobertura.Text, fechaTurno, especialidad)
                     ;
+                paciente = this.pacienteConsultorioExterno;
+
                 this.DialogResult = DialogResult.OK;
             }
         }

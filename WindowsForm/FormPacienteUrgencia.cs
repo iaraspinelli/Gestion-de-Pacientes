@@ -97,6 +97,9 @@ namespace WindowsForm
                 DateTime fechaIngreso = this.dateTimeFechaIngreso.Value;
                 this.pacienteUrgencia = new PacienteUrgencia(base.txtNombre.Text, base.txtApellido.Text, int.Parse(base.txtEdad.Text), int.Parse(base.txtDni.Text), base.txtCobertura.Text, fechaIngreso, especialidad)
                     ;
+
+                paciente = this.pacienteUrgencia;
+
                 this.DialogResult = DialogResult.OK;
             }
         }

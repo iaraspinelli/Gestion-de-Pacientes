@@ -317,23 +317,38 @@ namespace Entidades
 
         #region INSERT
         /// <summary>
-        /// Agrega un nuevo paciente de urgencia a la tabla pacienteUrgencia en la base de datos. 
+        /// Agrega un nuevo paciente a la tabla que corresponda en la base de datos, luego de verificar el tipo de paciente que ingresa.
         /// </summary>
-        /// <param name="pacienteUrgencia">El objeto PacienteUrgencia a agregar.</param>
-        /// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
+        /// <param name="paciente">El objeto Paciente a agregar.</param>
+        /// <returns>Devuelve true si el paciente se agregó correctamente; de lo contrario, false.</returns>
         /// <exception cref="Exception">Se lanza en caso de error durante la operación.
         /// </exception>
-        public bool AgregarPacienteUrgencia(PacienteUrgencia pacienteUrgencia)
+        public bool AgregarPaciente(Paciente paciente)
         {
             bool respuestaAgregado = false;
             try
             {
                 this.comando = new SqlCommand();
-                GenerarParametrosPaciente(pacienteUrgencia, this.comando);
-                GenerarParametrosPacienteUrgencia(pacienteUrgencia, this.comando);
-
                 this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = $"INSERT INTO pacienteUrgencia (nombre,apellido,edad,dni,cobertura,fechaIngreso,especialidadUrgencia) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaIngreso, @especialidadUrgencia)";
+                this.comando.Parameters.AddWithValue("@id", paciente.Id);
+                GenerarParametrosPaciente(paciente, this.comando);
+
+                if (paciente is PacienteUrgencia)
+                {
+                    GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
+                    this.comando.CommandText = $"INSERT INTO pacienteUrgencia (nombre,apellido,edad,dni,cobertura,fechaIngreso,especialidadUrgencia) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaIngreso, @especialidadUrgencia)";
+                }
+                else if (paciente is PacienteConsultorioExterno)
+                {
+                    GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
+                    this.comando.CommandText = $"INSERT INTO pacienteConsultorioExterno (nombre,apellido,edad,dni,cobertura,fechaTurno,especialidad) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaTurno, @especialidad)";
+                }
+                else if (paciente is PacienteHospitalizado)
+                {
+                    GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
+                    this.comando.CommandText = $"INSERT INTO pacienteHospitalizado (nombre,apellido,edad,dni,cobertura,fechaInternacion,numeroHabitacion) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaInternacion, @numeroHabitacion)";
+                }
+
 
                 this.comando.Connection = this.conexion;
                 this.conexion.Open();
@@ -343,10 +358,11 @@ namespace Entidades
                 {
                     respuestaAgregado = true;
                 }
+
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al agregar paciente de urgencias.", ex);
+                throw new Exception("No se ha podido agregar el paciente.", ex);
             }
             finally
             {
@@ -358,131 +374,58 @@ namespace Entidades
 
             return respuestaAgregado;
         }
-
-        /// <summary>
-        /// Agrega un nuevo paciente de urgencia a la tabla pacienteConsultorioExterno en la base de datos. 
-        /// </summary>
-        /// <param name="pacienteConsultorioExterno">El objeto PacienteConsultorioExterno a agregar.</param>
-        /// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
-        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
-        /// </exception>
-        public bool AgregarPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno)
-        {
-            bool respuestaAgregado = false;
-            try
-            {
-                this.comando = new SqlCommand();
-                GenerarParametrosPaciente(pacienteConsultorioExterno, this.comando);
-                GenerarParametrosPacienteConsultorioExterno(pacienteConsultorioExterno, this.comando);
-
-                this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = $"INSERT INTO pacienteConsultorioExterno (nombre,apellido,edad,dni,cobertura,fechaTurno,especialidad) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaTurno, @especialidad)";
-
-                this.comando.Connection = this.conexion;
-                this.conexion.Open();
-
-                int filasAfectadas = this.comando.ExecuteNonQuery();
-                if (filasAfectadas == 1)
-                {
-                    respuestaAgregado = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al agregar paciente de consultorios externos.", ex);
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return respuestaAgregado;
-        }
-
-        /// <summary>
-        /// Agrega un nuevo paciente de urgencia a la tabla pacienteHospitalizado en la base de datos. 
-        /// </summary>
-        /// <param name="pacienteHospitalizado">El objeto PacienteHospitalizado a agregar.</param>
-        /// <returns>Devuelve true si el paciente de urgencia se agregó correctamente; de lo contrario, false.</returns>
-        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
-        /// </exception>
-        public bool AgregarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado)
-        {
-            bool respuestaAgregado = false;
-            try
-            {
-                this.comando = new SqlCommand();
-                GenerarParametrosPaciente(pacienteHospitalizado, this.comando);
-                GenerarParametrosPacienteHospitalizado(pacienteHospitalizado, this.comando);
-
-                this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = $"INSERT INTO pacienteHospitalizado (nombre,apellido,edad,dni,cobertura,fechaInternacion,numeroHabitacion) VALUES (@nombre, @apellido, @edad, @dni, @cobertura, @fechaInternacion, @numeroHabitacion)";
-
-                this.comando.Connection = this.conexion;
-                this.conexion.Open();
-
-                int filasAfectadas = this.comando.ExecuteNonQuery();
-                if (filasAfectadas == 1)
-                {
-                    respuestaAgregado = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al agregar paciente de hospitalización.", ex);
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return respuestaAgregado;
-        }
-
 
         #endregion
 
 
         #region UPDATE
 
-        public bool ModificarPacienteHospitalizado(PacienteHospitalizado paciente)
+        /// <summary>
+        /// Modifica un paciente de la tabla que corresponda en la base de datos, luego de verificar el tipo de paciente que ingresa.
+        /// </summary>
+        /// <param name="paciente">El objeto Paciente a modificar.</param>
+        /// <returns>Devuelve true si el paciente se modificó correctamente; de lo contrario, false.</returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// </exception>
+        public bool ModificarPaciente(Paciente paciente, int id)
         {
-            //bool respuestaModificar = false;
+            bool respuestaModificar = false;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(cadena_conexion))
+                this.comando = new SqlCommand();
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.Parameters.AddWithValue("@id", id);
+                GenerarParametrosPaciente(paciente, this.comando);
+
+                if (paciente is PacienteUrgencia)
                 {
-                    connection.Open();
+                    GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
+                    this.comando.CommandText = "UPDATE pacienteUrgencia SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaIngreso = @fechaIngreso, especialidadUrgencia = @especialidadUrgencia WHERE id = @id";
+                }
+                else if (paciente is PacienteConsultorioExterno)
+                {
+                    GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
+                    this.comando.CommandText = "UPDATE pacienteConsultorioExterno SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaTurno = @fechaTurno, especialidad = @especialidad WHERE id = @id";
+                }
+                else if (paciente is PacienteHospitalizado)
+                {
+                    GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
+                    this.comando.CommandText = "UPDATE pacienteHospitalizado SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaInternacion = @fechaInternacion, numeroHabitacion = @numeroHabitacion WHERE id = @id";
+                }
 
-                    string query = "UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id = @id";
+                this.comando.Connection = this.conexion;
+                this.conexion.Open();
 
-                    using (SqlCommand comando = new SqlCommand(query, connection))
-                    {
-                        comando.Parameters.AddWithValue("@id", paciente.Id);
-                        comando.Parameters.AddWithValue("@nombre", paciente.Nombre);
-                        comando.Parameters.AddWithValue("@apellido", paciente.Apellido);
-                        comando.Parameters.AddWithValue("@edad", paciente.Edad);
-                        comando.Parameters.AddWithValue("@dni", paciente.Dni);
-                        comando.Parameters.AddWithValue("@cobertura", paciente.Cobertura);
-                        comando.Parameters.AddWithValue("@fechaInternacion", paciente.FechaInternacion);
-                        comando.Parameters.AddWithValue("@numeroHabitacion", paciente.NumeroHabitacion);
-
-                        int rowsAffected = comando.ExecuteNonQuery();
-
-                        return rowsAffected > 0; // Retorna true si se realizaron cambios en la base de datos.
-                    }
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+                if (filasAfectadas == 1)
+                {
+                    respuestaModificar = true;
                 }
             }
             catch (Exception ex)
             {
-                return false;
+                throw new Exception("No se ha podido modificar el paciente.", ex);
             }
             finally
             {
@@ -491,53 +434,8 @@ namespace Entidades
                     this.conexion.Close();
                 }
             }
-            //try
-            //{
 
-            //    this.comando = new SqlCommand();
-            //    this.comando.CommandType = System.Data.CommandType.Text;
-            //    this.comando.Parameters.AddWithValue("@id", paciente.Id);
-            //    GenerarParametrosPaciente(paciente, this.comando);
-
-            //    if (paciente is PacienteUrgencia)
-            //    {
-            //        GenerarParametrosPacienteUrgencia((PacienteUrgencia)paciente, this.comando);
-            //        this.comando.CommandText = "UPDATE pacienteUrgencia SET nombre = @nombre, apellido = @apellido, edad = @edad, dni = @dni, cobertura = @cobertura, fechaIngreso = @fechaIngreso, especialidadUrgencia = @especialidadUrgencia WHERE id = @id";
-            //    }
-            //    else if (paciente is PacienteConsultorioExterno)
-            //    {
-            //        GenerarParametrosPacienteConsultorioExterno((PacienteConsultorioExterno)paciente, this.comando);
-            //        this.comando.CommandText = "UPDATE pacienteConsultorioExterno SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaTurno=@fechaTurno,especialidad=@especialidad WHERE id = @id";
-            //    }
-            //    else if (paciente is PacienteHospitalizado)
-            //    {
-            //        GenerarParametrosPacienteHospitalizado((PacienteHospitalizado)paciente, this.comando);
-            //        this.comando.CommandText = "UPDATE pacienteHospitalizado SET nombre=@nombre,apellido=@apellido,edad=@edad,dni=@dni,cobertura=@cobertura,fechaInternacion=@fechaInternacion,numeroHabitacion=@numeroHabitacion WHERE id = @id";
-            //    }
-
-            //    this.comando.Connection = this.conexion;
-            //    this.conexion.Open();
-
-
-            //    int filasAfectadas = this.comando.ExecuteNonQuery();
-            //    if (filasAfectadas > 0)
-            //    {
-            //        respuestaModificar = true;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception("Error al querer modificar el paciente.", ex);
-            //}
-            //finally
-            //{
-            //    if (this.conexion.State == System.Data.ConnectionState.Open)
-            //    {
-            //        this.conexion.Close();
-            //    }
-            //}
-
-            //return respuestaModificar;
+            return respuestaModificar;
         }
 
 
@@ -546,6 +444,13 @@ namespace Entidades
 
         #region DELETE
 
+        /// <summary>
+        /// Elimina un paciente de la tabla que corresponda en la base de datos, luego de verificar el tipo de paciente que ingresa.
+        /// </summary>
+        /// <param name="paciente">El objeto Paciente a eliminar.</param>
+        /// <returns>Devuelve true si el paciente se eliminó correctamente; de lo contrario, false.</returns>
+        /// <exception cref="Exception">Se lanza en caso de error durante la operación.
+        /// </exception>
         public bool EliminarPaciente(Paciente paciente)
         {
             bool respuestaEliminar = false;
@@ -579,7 +484,7 @@ namespace Entidades
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al querer eliminar el paciente.", ex);
+                throw new Exception("No se ha podido eliminar el paciente.", ex);
             }
             finally
             {

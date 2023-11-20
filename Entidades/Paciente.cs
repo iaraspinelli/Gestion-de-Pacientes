@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -236,6 +237,16 @@ namespace Entidades
         public static implicit operator string(Paciente paciente)
         {
             return paciente.nombre;
+        }
+
+        public static bool operator ==(List<Paciente> listaPacientes, Paciente paciente)
+        {
+            return listaPacientes.Contains(paciente);
+        }
+
+        public static bool operator !=(List<Paciente> listaPacientes, Paciente paciente)
+        {
+            return !(listaPacientes == paciente);
         }
 
 

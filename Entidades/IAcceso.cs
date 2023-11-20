@@ -21,13 +21,9 @@ namespace Entidades
 
         void GenerarParametrosPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado, SqlCommand comando);
 
-        bool AgregarPacienteUrgencia(PacienteUrgencia pacienteUrgencia);
+        bool AgregarPaciente(Paciente paciente);
 
-        bool AgregarPacienteConsultorioExterno(PacienteConsultorioExterno pacienteConsultorioExterno);
-
-        bool AgregarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado);
-
-        bool ModificarPacienteHospitalizado(PacienteHospitalizado pacienteHospitalizado);
+        bool ModificarPaciente(Paciente paciente, int idPaciente);
 
         bool EliminarPaciente(Paciente paciente);
 

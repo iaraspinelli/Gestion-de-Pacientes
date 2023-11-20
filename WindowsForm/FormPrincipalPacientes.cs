@@ -81,37 +81,6 @@ namespace WindowsForm
             }
             this.ActualizarListadoPacientes();
 
-            /*
-            //OpenFileDialog abrirArchivo = new OpenFileDialog();
-            //using (abrirArchivo)
-            //{
-            //    abrirArchivo.Filter = "XML Files (*.xml)|*.xml";
-            //    if (abrirArchivo.ShowDialog() == DialogResult.OK)
-            //    {
-            //        string nombreArchivo = abrirArchivo.FileName;
-
-            //        XmlSerializer srXml = new XmlSerializer(typeof(List<Paciente>));
-
-            //        try
-            //        {
-            //            using (XmlTextReader lectorXml = new XmlTextReader(nombreArchivo))
-            //            {
-            //                listaPacientes.Pacientes = (List<Paciente>)srXml.Deserialize(lectorXml);
-            //            }
-            //            this.ActualizarListadoPacientes();
-            //        }
-            //        catch (Exception excepcion)
-            //        {
-            //            MessageBox.Show(excepcion.Message);
-            //            this.DialogResult = DialogResult.OK;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        this.DialogResult = DialogResult.OK;
-            //    }
-            //}
-            */
         }
 
         #endregion
@@ -120,7 +89,7 @@ namespace WindowsForm
         #region Agregar paciente
         /// <summary>
         /// Maneja el evento de clic en el botón "Agregar", abriendo un formulario específico para agregar un paciente, según el tipo de ingreso seleccionado.
-        /// Agrega el paciente al listado de pacientes y actualiza el visor del listBox, si la operación del formulario es exitosa.
+        /// Agrega el paciente a la tabla correspondiente en la base de datos, según el tipo de pacientes, y actualiza el visor del listBox, si la operación del formulario es exitosa.
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic en el botón "Agregar".</param>
@@ -130,54 +99,56 @@ namespace WindowsForm
             {
                 this.ingresoSeleccionado = (string)this.cboIngresoPaciente.SelectedItem;
 
-                if (this.ingresoSeleccionado == "Urgencias")
+                if (this.accesobd is not null)
                 {
-                    FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia();
-                    formPacienteUrgencia.ShowDialog();
 
-                    if (formPacienteUrgencia.DialogResult == DialogResult.OK)
+                    if (this.ingresoSeleccionado == "Urgencias")
                     {
-                        PacienteUrgencia pacienteUrgencia = formPacienteUrgencia.PacienteUrgencia;
+                        FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia();
+                        formPacienteUrgencia.ShowDialog();
 
-                        if (accesobd.AgregarPacienteUrgencia(pacienteUrgencia))
+                        if (formPacienteUrgencia.DialogResult == DialogResult.OK)
                         {
-                            this.listaPacientes += pacienteUrgencia;
-                            this.ActualizarListadoPacientes();
+                            PacienteUrgencia pacienteUrgencia = formPacienteUrgencia.PacienteUrgencia;
+
+                            if (accesobd.AgregarPaciente(pacienteUrgencia))
+                            {
+                                this.listaPacientes += pacienteUrgencia;
+                            }
+                        }
+                    }
+                    else if (this.ingresoSeleccionado == "Consultorios Externos")
+                    {
+                        FormPacienteConsultorioExterno formPacienteConsultorio = new FormPacienteConsultorioExterno();
+                        formPacienteConsultorio.ShowDialog();
+
+                        if (formPacienteConsultorio.DialogResult == DialogResult.OK)
+                        {
+                            PacienteConsultorioExterno pacienteConsultorioExterno = formPacienteConsultorio.PacienteConsultorioExterno;
+
+                            if (accesobd.AgregarPaciente(pacienteConsultorioExterno))
+                            {
+                                this.listaPacientes += pacienteConsultorioExterno;
+                            }
+                        }
+                    }
+                    else if (this.ingresoSeleccionado == "Hospitalización")
+                    {
+                        FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado();
+                        formPacienteHospitalizado.ShowDialog();
+
+                        if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
+                        {
+                            PacienteHospitalizado pacienteHospitalizado = formPacienteHospitalizado.PacienteHospitalizado;
+
+                            if (accesobd.AgregarPaciente(pacienteHospitalizado))
+                            {
+                                this.listaPacientes += pacienteHospitalizado;
+                            }
                         }
                     }
                 }
-                else if (this.ingresoSeleccionado == "Consultorios Externos")
-                {
-                    FormPacienteConsultorioExterno formPacienteConsultorio = new FormPacienteConsultorioExterno();
-                    formPacienteConsultorio.ShowDialog();
-
-                    if (formPacienteConsultorio.DialogResult == DialogResult.OK)
-                    {
-                        PacienteConsultorioExterno pacienteConsultorioExterno = formPacienteConsultorio.PacienteConsultorioExterno;
-
-                        if (accesobd.AgregarPacienteConsultorioExterno(pacienteConsultorioExterno))
-                        {
-                            this.listaPacientes += pacienteConsultorioExterno;
-                            this.ActualizarListadoPacientes();
-                        }
-                    }
-                }
-                else if (this.ingresoSeleccionado == "Hospitalización")
-                {
-                    FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado();
-                    formPacienteHospitalizado.ShowDialog();
-
-                    if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
-                    {
-                        PacienteHospitalizado pacienteHospitalizado = formPacienteHospitalizado.PacienteHospitalizado;
-
-                        if (accesobd.AgregarPacienteHospitalizado(pacienteHospitalizado))
-                        {
-                            this.listaPacientes += pacienteHospitalizado;
-                            this.ActualizarListadoPacientes();
-                        }
-                    }
-                }
+                this.ActualizarListadoPacientes();
             }
             else
             {
@@ -192,73 +163,88 @@ namespace WindowsForm
         #region Modificar paciente
         /// <summary>
         /// Maneja el evento de clic en el botón "Modificar", abriendo un formulario específico para modificar un paciente según el Item seleccionado en el listBox.
-        /// Actualiza la información del paciente en el listado si la operación es exitosa.
+        /// Actualiza la información del paciente en la tabla correspondiente en la base de datos, y actualiza el visor del listBox, si la operación del formulario es exitosa.
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic en el botón "Modificar".</param>
         private void btnModificar_Click(object sender, EventArgs e)
         {
             int indexSeleccionado = this.lstPacientes.SelectedIndex;
+            int id = this.listaPacientes.Pacientes[indexSeleccionado].Id;
 
             if (indexSeleccionado != -1)
             {
 
                 Paciente paciente = this.listaPacientes.Pacientes[indexSeleccionado];
+                List<Paciente> lista = new List<Paciente>(this.listaPacientes.Pacientes);
+                lista.Remove(paciente);
 
                 if (this.accesobd is not null)
-                { 
-
-                    if (paciente is PacienteUrgencia)
+                {
+                    if (this.listaPacientes.Pacientes[indexSeleccionado] is PacienteUrgencia)
                     {
                         FormPacienteUrgencia formPacienteUrgencia = new FormPacienteUrgencia((PacienteUrgencia)paciente);
                         formPacienteUrgencia.ShowDialog();
 
                         if (formPacienteUrgencia.DialogResult == DialogResult.OK)
                         {
-                            //if (this.accesobd.ModificarPaciente(paciente))
-                            //{
-                            //    this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteUrgencia.PacienteUrgencia;
-                            //    //this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
-                            //}
-                        }
+                            PacienteUrgencia pacienteUrgencia = formPacienteUrgencia.PacienteUrgencia;
+                            pacienteUrgencia.Id = this.listaPacientes.Pacientes[indexSeleccionado].Id;
 
+                            if (lista == pacienteUrgencia)
+                            {
+                                if (this.accesobd.ModificarPaciente(pacienteUrgencia, id))
+                                {
+                                    this.listaPacientes.Pacientes[indexSeleccionado] = pacienteUrgencia;
+                                    this.listaPacientes.Pacientes[indexSeleccionado].Id = id;
+                                }
+                            }
+                        }
                     }
-                    else if (paciente is PacienteConsultorioExterno)
+                    else if (this.listaPacientes.Pacientes[indexSeleccionado] is PacienteConsultorioExterno)
                     {
                         FormPacienteConsultorioExterno formPacienteConsultorioExterno = new FormPacienteConsultorioExterno((PacienteConsultorioExterno)paciente);
                         formPacienteConsultorioExterno.ShowDialog();
 
                         if (formPacienteConsultorioExterno.DialogResult == DialogResult.OK)
                         {
-                            //if (this.accesobd.ModificarPaciente(paciente))
-                            //{
-                            //    this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteConsultorioExterno.PacienteConsultorioExterno;
-                            //    //this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
-                            //}
+                            PacienteConsultorioExterno pacienteConsultorioExterno = formPacienteConsultorioExterno.PacienteConsultorioExterno;
+                            pacienteConsultorioExterno.Id = this.listaPacientes.Pacientes[indexSeleccionado].Id;
+
+                            if (lista == pacienteConsultorioExterno)
+                            {
+                                if (this.accesobd.ModificarPaciente(pacienteConsultorioExterno, id))
+                                {
+                                    this.listaPacientes.Pacientes[indexSeleccionado] = pacienteConsultorioExterno;
+                                    this.listaPacientes.Pacientes[indexSeleccionado].Id = id;
+                                }
+                            }
                         }
 
                     }
-                    else if (paciente is PacienteHospitalizado)
+                    else if (this.listaPacientes.Pacientes[indexSeleccionado] is PacienteHospitalizado)
                     {
-                        FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado((PacienteHospitalizado)paciente, paciente.Id);
+                        FormPacienteHospitalizado formPacienteHospitalizado = new FormPacienteHospitalizado((PacienteHospitalizado)paciente);
                         formPacienteHospitalizado.ShowDialog();
 
                         if (formPacienteHospitalizado.DialogResult == DialogResult.OK)
                         {
                             PacienteHospitalizado pacienteHospitalizado = formPacienteHospitalizado.PacienteHospitalizado;
+                            pacienteHospitalizado.Id = this.listaPacientes.Pacientes[indexSeleccionado].Id;
 
-
-                            if (this.accesobd.ModificarPacienteHospitalizado(pacienteHospitalizado))
+                            if (lista == pacienteHospitalizado)
                             {
-                                this.listaPacientes.Pacientes[indexSeleccionado] = formPacienteHospitalizado.PacienteHospitalizado;
-                                this.listaPacientes.Pacientes[indexSeleccionado].Id = paciente.Id;
-                                this.ActualizarListadoPacientes();
+                                if (this.accesobd.ModificarPaciente(pacienteHospitalizado, id))
+                                {
+                                    this.listaPacientes.Pacientes[indexSeleccionado] = pacienteHospitalizado;
+                                    this.listaPacientes.Pacientes[indexSeleccionado].Id = id;
+                                }
                             }
                         }
                     }
                 }
 
-                //this.ActualizarListadoPacientes();
+                this.ActualizarListadoPacientes();
             }
             else
             {
@@ -271,7 +257,7 @@ namespace WindowsForm
 
         #region Eliminar Paciente
         /// <summary>
-        /// Maneja el evento de clic en el botón "Eliminar", pidiendo confirmación para eliminar un paciente y lo elimina del listado si se confirma.
+        /// Maneja el evento de clic en el botón "Eliminar", pidiendo confirmación para eliminar un paciente y lo elimina de la tabla correspondiente en el base de datos, y actualiza el listado si se confirma.
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de clic en el botón "Eliminar".</param>
@@ -493,33 +479,6 @@ namespace WindowsForm
             {
                 e.Cancel = true;
             }
-            /*
-            //else
-            //{
-            //    SaveFileDialog guardarArchivo = new SaveFileDialog();
-            //    using (guardarArchivo)
-            //    {
-            //        guardarArchivo.Filter = "XML Files (*.xml)|*.xml";
-            //        if (guardarArchivo.ShowDialog() == DialogResult.OK)
-            //        {
-            //            string nombreArchivo = guardarArchivo.FileName;
-
-            //            XmlSerializer srXml = new XmlSerializer(typeof(List<Paciente>));
-
-            //            using (XmlTextWriter escritorXml = new XmlTextWriter(nombreArchivo, Encoding.UTF8))
-            //            {
-            //                srXml.Serialize(escritorXml, listaPacientes.Pacientes);
-            //            }
-            //            this.DialogResult = DialogResult.OK;
-            //        }
-            //        else
-            //        {
-            //            e.Cancel = true;
-            //        }
-
-            //    }
-            //}
-            */
         }
 
         #endregion
