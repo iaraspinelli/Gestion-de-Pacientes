@@ -143,7 +143,6 @@ namespace WindowsForm
                                 if (accesobd.AgregarPaciente(pacienteUrgencia))
                                 {
                                     this.accesobd.EstablecerId(pacienteUrgencia, "pacienteUrgencia");
-                                    //this.listaPacientes += pacienteUrgencia;
                                     this.ActualizarListadoPacientes();
                                 }
                                 else
@@ -165,7 +164,6 @@ namespace WindowsForm
                                 if (accesobd.AgregarPaciente(pacienteConsultorioExterno))
                                 {
                                     this.accesobd.EstablecerId(pacienteConsultorioExterno, "pacienteConsultorioExterno");
-                                    //this.listaPacientes += pacienteConsultorioExterno;
                                     this.ActualizarListadoPacientes();
                                 }
                                 else
@@ -187,7 +185,6 @@ namespace WindowsForm
                                 if (accesobd.AgregarPaciente(pacienteHospitalizado))
                                 {
                                     this.accesobd.EstablecerId(pacienteHospitalizado, "pacienteHospitalizado");
-                                    //this.listaPacientes += pacienteHospitalizado;
                                     this.ActualizarListadoPacientes();
                                 }
                                 else

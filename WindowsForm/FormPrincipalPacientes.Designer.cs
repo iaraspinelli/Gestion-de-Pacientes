@@ -41,8 +41,8 @@
             lblDetalles = new Label();
             lblDatosUsuario = new Label();
             saveFileDialog1 = new SaveFileDialog();
-            openFileDialog1 = new OpenFileDialog();
             progressBar = new ProgressBar();
+            lblFechaHoraActual = new Label();
             btnAgregar = new Button();
             btnOrdenar = new Button();
             btnGuardarArchivo = new Button();
@@ -190,10 +190,6 @@
             lblDatosUsuario.MouseLeave += lblDatosUsuario_MouseLeave;
             lblDatosUsuario.MouseMove += lblDatosUsuario_MouseMove;
             // 
-            // openFileDialog1
-            // 
-            openFileDialog1.FileName = "openFileDialog1";
-            // 
             // progressBar
             // 
             progressBar.BackColor = Color.Black;
@@ -202,6 +198,16 @@
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(112, 29);
             progressBar.TabIndex = 25;
+            // 
+            // lblFechaHoraActual
+            // 
+            lblFechaHoraActual.AutoSize = true;
+            lblFechaHoraActual.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            lblFechaHoraActual.Location = new Point(12, 354);
+            lblFechaHoraActual.Name = "lblFechaHoraActual";
+            lblFechaHoraActual.Size = new Size(104, 15);
+            lblFechaHoraActual.TabIndex = 29;
+            lblFechaHoraActual.Text = "Fecha Hora Actual";
             // 
             // btnAgregar
             // 
@@ -251,6 +257,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkGray;
             ClientSize = new Size(978, 523);
+            Controls.Add(lblFechaHoraActual);
             Controls.Add(btnGuardarArchivo);
             Controls.Add(progressBar);
             Controls.Add(btnOrdenar);
@@ -294,7 +301,7 @@
         private Label lblDetalles;
         private Label lblDatosUsuario;
         private SaveFileDialog saveFileDialog1;
-        private OpenFileDialog openFileDialog1;
         private ProgressBar progressBar;
+        private Label lblFechaHoraActual;
     }
 }
