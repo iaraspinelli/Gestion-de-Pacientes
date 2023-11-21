@@ -136,14 +136,10 @@ namespace Entidades
         /// <returns>Retorna la instancia de la clase Clinica con el paciente eliminado, si el paciente está en la lista; si no está, se devuelve la instancia original.</returns>
         public static Clinica<T> operator -(Clinica<T> listaPacientes, T paciente)
         {
-            //foreach (Paciente item in listaPacientes.pacientes)
-            //{
-                if (listaPacientes == paciente)
-                {
-                    listaPacientes.pacientes.Remove(paciente);
-                }
-
-            //}
+            if (listaPacientes == paciente)
+            {
+                listaPacientes.pacientes.Remove(paciente);
+            }
 
             return listaPacientes;
         }

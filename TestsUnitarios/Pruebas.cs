@@ -17,7 +17,6 @@ namespace TestsUnitarios
         public void VerificarIgualdadPacientes_Ok()
         {
             //Arrange
-            //PacienteUrgencia 
             Paciente paciente1 = new PacienteUrgencia("iara","spinelli",26,40677296,"osde");
             Paciente paciente2 = new PacienteHospitalizado("iara","spinelli",26, 40677296, "osde");
             Paciente paciente3 = new PacienteConsultorioExterno("iara", "spinelli", 26, 40677296, "osde");
