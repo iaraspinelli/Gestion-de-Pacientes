@@ -21,6 +21,7 @@ namespace WindowsForm
         public FormHistorialUsuarios()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         #region Cargar formulario con el historial de usuarios

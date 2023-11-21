@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace Entidades
 {
+    public delegate void Action(int e);
     /// <summary>
     /// Atributos de serializacion XML que permiten incluir el tipo de Paciente indicado como un tipo válido para la serializacion xml.
     /// </summary>
@@ -30,6 +31,8 @@ namespace Entidades
         protected string cobertura;
 
         #endregion
+
+        public event Action NumeroInvalido;
 
         #region Propiedades
 

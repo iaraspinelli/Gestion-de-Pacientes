@@ -35,6 +35,14 @@ namespace WindowsForm
         }
         #endregion
 
+
+        #region Eventos
+
+        //public event DelegadoValidarFormulario CampoInvalido;
+
+        #endregion
+
+
         #region Constructores
 
         /// <summary>
@@ -44,6 +52,8 @@ namespace WindowsForm
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            this.CampoInvalido += MostrarMensajeCampoInvalido;
         }
 
         /// <summary>
@@ -56,6 +66,7 @@ namespace WindowsForm
         }
 
         #endregion
+
 
         #region Metodos
 
@@ -98,12 +109,13 @@ namespace WindowsForm
                 }
                 else
                 {
-                    MessageBox.Show($"El campo Número Habitación debe contener sólo números entre 1 y 10.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MostrarMensajeCampoInvalido("El campo Número Habitación debe contener sólo números entre 1 y 10.");
                 }
             }
         }
         #endregion
         
         #endregion
+
     }
 }

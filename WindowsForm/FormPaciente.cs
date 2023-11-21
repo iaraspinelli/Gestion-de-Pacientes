@@ -11,14 +11,22 @@ using System.Windows.Forms;
 
 namespace WindowsForm
 {
+    #region Delegados
+
+    public delegate void DelegadoValidarFormulario(string mensaje);
+
+    #endregion
+
     /// <summary>
     /// Clase public partial que representa un objeto FormPaciente.
     /// </summary>
     public partial class FormPaciente : Form
     {
+
         #region Atributos
         protected Paciente paciente;
         #endregion
+
 
         #region Propiedades
         public Paciente Paciente
@@ -34,6 +42,14 @@ namespace WindowsForm
         }
         #endregion
 
+
+        #region Eventos
+
+        public event DelegadoValidarFormulario CampoInvalido;
+
+        #endregion
+
+
         #region Constructores
 
         /// <summary>
@@ -43,82 +59,21 @@ namespace WindowsForm
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            this.CampoInvalido += MostrarMensajeCampoInvalido;
         }
 
         #endregion
 
+
         #region Metodos y eventos
 
-        #region Validaciones de campos
-        /// <summary>
-        /// Verifica si todos los controles del formulario están completos y si son válidos.
-        /// </summary>
-        /// <returns>Retorna true si todos los campos están completos y son válidos; sino retorna false.</returns>
-        protected bool VerificarCamposFormulario()
+
+        #region Mensaje Evento
+        protected void MostrarMensajeCampoInvalido(string mensaje)
         {
-            bool camposCompletos = true;
-            foreach (Control item in this.Controls)
-            {
-                if (item is TextBox)
-                {
-                    if (item.Text == String.Empty)
-                    {
-                        MessageBox.Show("Debe completar todos los datos correctamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        camposCompletos = false;
-                        break;
-                    }
-
-                    if (item == this.txtEdad || item == this.txtDni)
-                    {
-                        if (!(item.Text.All(char.IsDigit)))
-                        {
-                            MessageBox.Show($"Los campos Edad y DNI deben contener solo números.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            camposCompletos = false;
-                            break;
-                        }
-
-                        if (item == this.txtEdad)
-                        {
-                            int edad = int.Parse(this.txtEdad.Text);
-                            if (edad < 0 || edad > 110)
-                            {
-                                MessageBox.Show("La edad mínima y máxima permitida son 0 y 100 respectivamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                camposCompletos = false;
-                                break;
-                            }
-                        }
-
-                        if (item == this.txtDni)
-                        {
-                            int cantidadDigitos = this.txtDni.Text.Length;
-                            if (cantidadDigitos < 7 || cantidadDigitos > 8)
-                            {
-                                MessageBox.Show("Para el DNI sólo se permite ingresar 7 u 8 dígitos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                camposCompletos = false;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (item.Text.Length > 20)
-                        {
-                            MessageBox.Show("Para los campos de Nombre, Apellido y Cobertura no se permiten más de 20 caracteres.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            camposCompletos = false;
-                            break;
-                        }
-                    }
-                }
-                if (item is ComboBox && ((ComboBox)item).SelectedItem == null)
-                {
-                    MessageBox.Show("Debe elegir una especialidad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    camposCompletos = false;
-                    break;
-                }
-            }
-            return camposCompletos;
+            MessageBox.Show(mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
         #endregion
 
 
@@ -138,6 +93,79 @@ namespace WindowsForm
         #endregion
 
 
+        #region Validaciones de campos
+        /// <summary>
+        /// Verifica si todos los controles del formulario están completos y si son válidos.
+        /// </summary>
+        /// <returns>Retorna true si todos los campos están completos y son válidos; sino retorna false.</returns>
+        protected bool VerificarCamposFormulario()
+        {
+            bool camposCompletos = true;
+            foreach (Control item in this.Controls)
+            {
+                if (item is TextBox)
+                {
+                    if (item.Text == String.Empty)
+                    {
+                        this.CampoInvalido.Invoke("Debe completar todos los datos correctamente");
+                        camposCompletos = false;
+                        break;
+                    }
+
+                    if (item == this.txtEdad || item == this.txtDni)
+                    {
+                        if (!(item.Text.All(char.IsDigit)))
+                        {
+                            this.CampoInvalido.Invoke("Los campos Edad y DNI deben contener solo números.");
+                            camposCompletos = false;
+                            break;
+                        }
+
+                        if (item == this.txtEdad)
+                        {
+                            int edad = int.Parse(this.txtEdad.Text);
+                            if (edad < 0 || edad > 110)
+                            {
+                                this.CampoInvalido.Invoke("La edad mínima y máxima permitida son 0 y 100 respectivamente.");
+                                camposCompletos = false;
+                                break;
+                            }
+                        }
+
+                        if (item == this.txtDni)
+                        {
+                            int cantidadDigitos = this.txtDni.Text.Length;
+                            if (cantidadDigitos < 7 || cantidadDigitos > 8)
+                            {
+                                this.CampoInvalido.Invoke("Para el DNI sólo se permite ingresar 7 u 8 dígitos.");
+                                camposCompletos = false;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (item.Text.Length > 20)
+                        {
+                            this.CampoInvalido.Invoke("Para los campos de Nombre, Apellido y Cobertura no se permiten más de 20 caracteres.");
+                            camposCompletos = false;
+                            break;
+                        }
+                    }
+                }
+                if (item is ComboBox && ((ComboBox)item).SelectedItem == null)
+                {
+                    this.CampoInvalido.Invoke("Debe elegir una especialidad.");
+                    camposCompletos = false;
+                    break;
+                }
+            }
+            return camposCompletos;
+        }
+
+        #endregion
+
+
         #region Aceptar
         /// <summary>
         ///  Maneja el evento de clic en el botón "Aceptar", estableciendo el resultado del formulario como "OK".
@@ -150,6 +178,7 @@ namespace WindowsForm
         }
 
         #endregion
+
 
         #endregion
 

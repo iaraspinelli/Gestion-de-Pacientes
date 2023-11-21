@@ -18,6 +18,12 @@ using System.Linq.Expressions;
 
 namespace WindowsForm
 {
+    #region Delegados
+
+    public delegate void DelegadoOperacionInvalida(string mensaje);
+
+    #endregion
+
     /// <summary>
     /// Clase public partial que representa un objeto FormPrincipalPacientes, un formulario MDI, que contiene el visor para visualizar la lista de pacientes que se vaya generando. 
     /// </summary>
@@ -30,6 +36,13 @@ namespace WindowsForm
         private string ingresoSeleccionado;
         private string tipoOrdenSeleccionado;
         private string maneraOrdenSeleccionado;
+
+        #endregion
+
+
+        #region Eventos
+
+        public event DelegadoOperacionInvalida OperacionInvalida;
 
         #endregion
 
@@ -58,11 +71,23 @@ namespace WindowsForm
             {
                 this.btnEliminar.Visible = false;
             }
+
+
+            this.OperacionInvalida += MostrarMensajeOperacionInvalida;
         }
         #endregion
 
 
-        #region Metodos y eventos
+        #region Metodos y eventos de form
+
+
+        #region Mensaje Evento
+        protected void MostrarMensajeOperacionInvalida(string mensaje)
+        {
+            MessageBox.Show(mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        #endregion
+
 
         #region Cargar form y listado pacientes
         /// <summary>
@@ -81,7 +106,6 @@ namespace WindowsForm
                 this.accesobd.ObtenerListaPacientes(listaPacientes.Pacientes, "pacienteHospitalizado");
             }
             this.ActualizarListadoPacientes();
-
         }
 
         #endregion
@@ -156,7 +180,7 @@ namespace WindowsForm
             }
             else
             {
-                MessageBox.Show("Debe indicar el tipo de ingreso del paciente.", "Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.OperacionInvalida.Invoke("Debe indicar el tipo de ingreso del paciente.");
             }
 
         }
@@ -174,11 +198,10 @@ namespace WindowsForm
         private void btnModificar_Click(object sender, EventArgs e)
         {
             int indexSeleccionado = this.lstPacientes.SelectedIndex;
-            int id = this.listaPacientes.Pacientes[indexSeleccionado].Id;
 
             if (indexSeleccionado != -1)
             {
-
+                int id = this.listaPacientes.Pacientes[indexSeleccionado].Id;
                 Paciente paciente = this.listaPacientes.Pacientes[indexSeleccionado];
                 List<Paciente> lista = new List<Paciente>(this.listaPacientes.Pacientes);
                 lista.Remove(paciente);
@@ -252,7 +275,7 @@ namespace WindowsForm
             }
             else
             {
-                MessageBox.Show("No se ha seleccionado ningún paciente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.OperacionInvalida.Invoke("No se ha seleccionado ningún paciente.");
             }
         }
 
@@ -287,7 +310,7 @@ namespace WindowsForm
             }
             else
             {
-                MessageBox.Show("No se ha seleccionado ningún paciente para eliminar.", "Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.OperacionInvalida.Invoke("No se ha seleccionado ningún paciente para eliminar.");
             }
         }
 
@@ -336,7 +359,7 @@ namespace WindowsForm
                 }
                 else
                 {
-                    MessageBox.Show("Debe indicar el tipo y la manera de ordenamiento.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.OperacionInvalida.Invoke("Debe indicar el tipo y la manera de ordenamiento.");
                 }
             }
         }
@@ -380,7 +403,7 @@ namespace WindowsForm
             }
             else
             {
-                MessageBox.Show("No se ha seleccionado ningún paciente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.OperacionInvalida.Invoke("No se ha seleccionado ningún paciente.");
             }
         }
 
