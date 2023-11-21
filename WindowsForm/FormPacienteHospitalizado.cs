@@ -21,6 +21,7 @@ namespace WindowsForm
         private PacienteHospitalizado pacienteHospitalizado;
         #endregion
 
+
         #region Propiedades
         public PacienteHospitalizado PacienteHospitalizado
         {

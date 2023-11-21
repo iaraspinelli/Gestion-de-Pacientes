@@ -11,11 +11,6 @@ using System.Windows.Forms;
 
 namespace WindowsForm
 {
-    #region Delegados
-
-    public delegate void DelegadoValidarFormulario(string mensaje);
-
-    #endregion
 
     /// <summary>
     /// Clase public partial que representa un objeto FormPaciente.
@@ -50,7 +45,7 @@ namespace WindowsForm
         #endregion
 
 
-        #region Constructores
+        #region Constructor
 
         /// <summary>
         /// Constructor de la clase FormPaciente, permite inicializar el componente form, centrarlo en el medio de la pantalla.

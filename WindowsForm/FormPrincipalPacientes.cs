@@ -8,22 +8,18 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms; //Para el FileDialog
-using System.IO; //Para el Stream
-using System.Xml.Serialization; //Para serializar xml
+using System.Windows.Forms;
+using System.IO;
+using System.Xml.Serialization;
 using System.Xml;
 using System.Drawing.Text;
 using System.Runtime.CompilerServices;
 using System.Linq.Expressions;
 using Action = System.Action;
+using Timer = System.Windows.Forms.Timer;
 
 namespace WindowsForm
 {
-    #region Delegados
-
-    public delegate void DelegadoOperacionInvalida(string mensaje);
-
-    #endregion
 
     /// <summary>
     /// Clase public partial que representa un objeto FormPrincipalPacientes, un formulario MDI, que contiene el visor para visualizar la lista de pacientes que se vaya generando. 
@@ -44,6 +40,8 @@ namespace WindowsForm
         #region Eventos
 
         public event DelegadoOperacionInvalida OperacionInvalida;
+        public event DelegadoOperacionValida OperacionValida;
+        public event DelegadoMostrarFechaActual FechaActualizada;
 
         #endregion
 
@@ -53,6 +51,7 @@ namespace WindowsForm
         /// <summary>
         /// Constructor clase FormPrincipalPacientes, permite inicializar el componente form, centrarlo en el medio de la pantalla, instanciar un objeto Clinica, y guardar en un atributo los datos del usuario logueado correctamente a partir del formLogin.
         /// Establece la visibilidad o invisibilidad de los controles, según el perfil del usuario logueado para restringir sus acciones dentro de la app.
+        /// Suscribe los eventos FechaActualizada para actualizar la fecha y horario actual en el label; y OperacionInvalida para mostrar mensaje de error al realizar una operación no permitida por la aplicación.
         /// </summary>
         public FormPrincipalPacientes(UsuarioLogin usuarioLogueado)
         {
@@ -62,6 +61,25 @@ namespace WindowsForm
             this.listaPacientes = new Clinica<Paciente>();
             this.usuarioLogueado = usuarioLogueado;
 
+            this.VerificarPerfilUsuario();
+
+            this.FechaActualizada += ActualizarFechaHorarioLabel;
+            this.OperacionInvalida += MostrarMensajeOperacionInvalida;
+            this.OperacionValida += MostrarMensajeOperacionValida;
+        }
+        #endregion
+
+
+        #region Metodos y eventos de form
+
+
+        #region Verificar perfil de usuario
+
+        /// <summary>
+        /// Verifica el perfil del usuario logueado y ajusta la visibilidad de los botones de acuerdo al perfil.
+        /// </summary>
+        private void VerificarPerfilUsuario()
+        {
             if (this.usuarioLogueado.perfil == "vendedor")
             {
                 this.btnAgregar.Visible = false;
@@ -72,33 +90,22 @@ namespace WindowsForm
             {
                 this.btnEliminar.Visible = false;
             }
-
-
-            this.OperacionInvalida += MostrarMensajeOperacionInvalida;
         }
-        #endregion
 
-
-        #region Metodos y eventos de form
-
-
-        #region Mensaje Evento
-        protected void MostrarMensajeOperacionInvalida(string mensaje)
-        {
-            MessageBox.Show(mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
         #endregion
 
 
         #region Cargar form y listado pacientes
         /// <summary>
         /// Maneja el evento de carga del formulario principal de pacientes, y obtiene la lista de pacientes desde la base de datos. 
+        /// Inicia una tarea asincrónica para mostrar la hora actual llamando al método ActualizarHorarioContinuamente
         /// Establece el texto del label lblUsuario con la información del usuario logueado.
         /// </summary>
         /// <param name="sender">Representa el objeto que genera el evento.</param>
         /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de carga del formulario.</param>
         private void FormPrincipalPacientes_Load(object sender, EventArgs e)
         {
+            Task mostrarTiempo = Task.Run(() => { this.ActualizarHorarioContinuamente(); });
             this.lblUsuario.Text = this.usuarioLogueado.ToString();
             if (this.accesobd is not null)
             {
@@ -193,6 +200,7 @@ namespace WindowsForm
                                 }
                             }
                         }
+                        this.OperacionValida.Invoke("Paciente agregado con éxito.");
                     }
                 }
                 else
@@ -292,6 +300,7 @@ namespace WindowsForm
                             }
                         }
                     }
+                    this.OperacionValida.Invoke("Paciente modificado con éxito.");
                 }
             }
             else
@@ -326,6 +335,8 @@ namespace WindowsForm
                             this.listaPacientes.Pacientes.RemoveAt(indexSeleccionado);
                             this.ActualizarListadoPacientes();
                         }
+
+                        this.OperacionValida.Invoke("Paciente eliminado con éxito.");
                     }
                 }
             }
@@ -389,7 +400,7 @@ namespace WindowsForm
         #endregion
 
 
-        #region Actualizar lista
+        #region Actualizar lista de manera Asincrónica con barra de progreso
         /// <summary>
         /// Actualiza de forma asincrónica el listado de pacientes en el ListBox del formulario.
         /// Realiza una tarea asincrónica con una barra de progreso y espera su finalización para luego reflejar la lista en el visor del listbox.
@@ -417,7 +428,7 @@ namespace WindowsForm
         private async Task RealizarTareaAsincronaConProgreso(ProgressBar progressBar)
         {
             const int tiempoTotal = 2000;
-            const int intervalo = 10;
+            const int intervalo = 20;
 
             int numeroPasos = tiempoTotal / intervalo;
 
@@ -491,7 +502,13 @@ namespace WindowsForm
         #endregion
 
 
-        #region Guardar Archivo
+        #region Guardar lista en Archivo XML
+
+        /// <summary>
+        /// Maneja el evento de clic en el botón "Guardar Lista", que permite guardar los datos de la lista de pacientes, solamente en un archivo XML (patrón de filtro con *.xml), a través de la serialización para XML.
+        /// </summary>
+        /// <param name="sender">Representa el objeto que genera el evento.</param>
+        /// <param name="e">Representa los argumentos del evento que proporcionan información sobre el evento de cierre del formulario.</param>
         private void btnGuardarArchivo_Click(object sender, EventArgs e)
         {
             SaveFileDialog guardarArchivo = new SaveFileDialog();
@@ -515,18 +532,80 @@ namespace WindowsForm
                             }
                             this.DialogResult = DialogResult.OK;
                         }
+                        this.OperacionValida.Invoke("Se ha guardado el archivo con éxito.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al intentar guardar el archivo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.OperacionInvalida.Invoke("Error al intentar guardar el archivo.");
                 }
             }
         }
         #endregion
 
 
-        #region Eventos MouseMove y MouseLeave
+        #region Actualizar Fecha
+
+        /// <summary>
+        /// Método que actualiza la fecha y hora actual en el label correspondiente del formulario.
+        /// Si la llamada proviene de un hilo diferente al original, realiza una invocación al hilo de la interfaz de usuario.
+        /// Sino, actualiza directamente el control lblFechaHoraActual si la llamada proviene del mismo hilo.
+        /// </summary>
+        /// <param name="fecha">La fecha actualizada.</param>
+        private void ActualizarFechaHorarioLabel(DateTime fecha)
+        {
+            if (this.lblFechaHoraActual.InvokeRequired)
+            {
+                this.lblFechaHoraActual.Invoke(new Action(() => this.lblFechaHoraActual.Text = fecha.ToString()));
+            }
+            else this.lblFechaHoraActual.Text = fecha.ToString();
+        }
+
+        /// <summary>
+        /// Método que actualiza continuamente la hora actual, invocando al evento para notificar la actualización de la fecha.
+        /// </summary>
+        private void ActualizarHorarioContinuamente()
+        {
+            do
+            {
+                DateTime fechaActual = DateTime.Now;
+                this.FechaActualizada.Invoke(fechaActual);
+                Task.Delay(1000).Wait();
+
+            } while (true);
+        }
+
+        #endregion
+
+
+        #region Mensaje Evento Operacion Invalida
+
+        /// <summary>
+        /// Muestra un cuadro de mensaje indicando una operación inválida con el mensaje proporcionado.
+        /// </summary>
+        /// <param name="mensaje">Representa el mensaje que se mostrará en el cuadro de mensaje.</param>
+        protected void MostrarMensajeOperacionInvalida(string mensaje)
+        {
+            MessageBox.Show(mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        #endregion
+
+
+        #region Mensaje Evento Operacion Valida
+
+        /// <summary>
+        /// Muestra un cuadro de mensaje indicando una operación válida con el mensaje proporcionado.
+        /// </summary>
+        /// <param name="mensaje">Representa el mensaje que se mostrará en el cuadro de mensaje.</param>
+        protected void MostrarMensajeOperacionValida(string mensaje)
+        {
+            MessageBox.Show(mensaje, "Éxito");
+        }
+        #endregion
+
+
+        #region Eventos del Mouse
+
         /// <summary>
         /// Maneja el evento de movimiento del mouse sobre la etiqueta "Detalles".
         /// Cambia la fuente y el color del label lblDetalles cuando el mouse se mueve sobre el control.

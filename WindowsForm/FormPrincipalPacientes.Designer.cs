@@ -48,6 +48,48 @@
             btnGuardarArchivo = new Button();
             SuspendLayout();
             // 
+            // btnAgregar
+            // 
+            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
+            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAgregar.Location = new Point(22, 118);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(86, 35);
+            btnAgregar.TabIndex = 7;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // btnOrdenar
+            // 
+            btnOrdenar.BackColor = SystemColors.GradientActiveCaption;
+            btnOrdenar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnOrdenar.FlatStyle = FlatStyle.Flat;
+            btnOrdenar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnOrdenar.Location = new Point(839, 334);
+            btnOrdenar.Name = "btnOrdenar";
+            btnOrdenar.Size = new Size(86, 35);
+            btnOrdenar.TabIndex = 23;
+            btnOrdenar.Text = "Ordenar";
+            btnOrdenar.UseVisualStyleBackColor = false;
+            btnOrdenar.Click += btnOrdenar_Click;
+            // 
+            // btnGuardarArchivo
+            // 
+            btnGuardarArchivo.BackColor = SystemColors.GradientActiveCaption;
+            btnGuardarArchivo.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnGuardarArchivo.FlatStyle = FlatStyle.Flat;
+            btnGuardarArchivo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnGuardarArchivo.Location = new Point(839, 423);
+            btnGuardarArchivo.Name = "btnGuardarArchivo";
+            btnGuardarArchivo.Size = new Size(88, 24);
+            btnGuardarArchivo.TabIndex = 27;
+            btnGuardarArchivo.Text = "Guardar Lista";
+            btnGuardarArchivo.UseVisualStyleBackColor = false;
+            btnGuardarArchivo.Click += btnGuardarArchivo_Click;
+            // 
             // lstPacientes
             // 
             lstPacientes.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
@@ -168,7 +210,7 @@
             // 
             lblDetalles.AutoSize = true;
             lblDetalles.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDetalles.Location = new Point(816, 104);
+            lblDetalles.Location = new Point(816, 138);
             lblDetalles.Name = "lblDetalles";
             lblDetalles.Size = new Size(115, 15);
             lblDetalles.TabIndex = 19;
@@ -202,54 +244,12 @@
             // lblFechaHoraActual
             // 
             lblFechaHoraActual.AutoSize = true;
-            lblFechaHoraActual.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblFechaHoraActual.Location = new Point(12, 354);
+            lblFechaHoraActual.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblFechaHoraActual.Location = new Point(773, 45);
             lblFechaHoraActual.Name = "lblFechaHoraActual";
-            lblFechaHoraActual.Size = new Size(104, 15);
+            lblFechaHoraActual.Size = new Size(107, 15);
             lblFechaHoraActual.TabIndex = 29;
             lblFechaHoraActual.Text = "Fecha Hora Actual";
-            // 
-            // btnAgregar
-            // 
-            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
-            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnAgregar.FlatStyle = FlatStyle.Flat;
-            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAgregar.Location = new Point(22, 118);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(86, 35);
-            btnAgregar.TabIndex = 7;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = false;
-            btnAgregar.Click += btnAgregar_Click;
-            // 
-            // btnOrdenar
-            // 
-            btnOrdenar.BackColor = SystemColors.GradientActiveCaption;
-            btnOrdenar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnOrdenar.FlatStyle = FlatStyle.Flat;
-            btnOrdenar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnOrdenar.Location = new Point(839, 334);
-            btnOrdenar.Name = "btnOrdenar";
-            btnOrdenar.Size = new Size(86, 35);
-            btnOrdenar.TabIndex = 23;
-            btnOrdenar.Text = "Ordenar";
-            btnOrdenar.UseVisualStyleBackColor = false;
-            btnOrdenar.Click += btnOrdenar_Click;
-            // 
-            // btnGuardarArchivo
-            // 
-            btnGuardarArchivo.BackColor = SystemColors.GradientActiveCaption;
-            btnGuardarArchivo.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnGuardarArchivo.FlatStyle = FlatStyle.Flat;
-            btnGuardarArchivo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnGuardarArchivo.Location = new Point(839, 423);
-            btnGuardarArchivo.Name = "btnGuardarArchivo";
-            btnGuardarArchivo.Size = new Size(88, 24);
-            btnGuardarArchivo.TabIndex = 27;
-            btnGuardarArchivo.Text = "Guardar Lista";
-            btnGuardarArchivo.UseVisualStyleBackColor = false;
-            btnGuardarArchivo.Click += btnGuardarArchivo_Click;
             // 
             // FormPrincipalPacientes
             // 
