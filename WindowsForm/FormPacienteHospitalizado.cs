@@ -36,13 +36,6 @@ namespace WindowsForm
         #endregion
 
 
-        #region Eventos
-
-        //public event DelegadoValidarFormulario CampoInvalido;
-
-        #endregion
-
-
         #region Constructores
 
         /// <summary>
@@ -87,6 +80,7 @@ namespace WindowsForm
         }
 
         #endregion
+
 
         #region Aceptar
         /// <summary>

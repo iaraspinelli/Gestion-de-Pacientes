@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Button btnAgregar;
+            Button btnOrdenar;
             lstPacientes = new ListBox();
             lblOrdenItem = new Label();
             lblOrdenManera = new Label();
@@ -42,9 +44,38 @@
             lblDatosUsuario = new Label();
             saveFileDialog1 = new SaveFileDialog();
             openFileDialog1 = new OpenFileDialog();
+            progressBar = new ProgressBar();
             btnAgregar = new Button();
             btnOrdenar = new Button();
             SuspendLayout();
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
+            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAgregar.Location = new Point(22, 118);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(86, 35);
+            btnAgregar.TabIndex = 7;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // btnOrdenar
+            // 
+            btnOrdenar.BackColor = SystemColors.GradientActiveCaption;
+            btnOrdenar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnOrdenar.FlatStyle = FlatStyle.Flat;
+            btnOrdenar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnOrdenar.Location = new Point(839, 334);
+            btnOrdenar.Name = "btnOrdenar";
+            btnOrdenar.Size = new Size(86, 35);
+            btnOrdenar.TabIndex = 23;
+            btnOrdenar.Text = "Ordenar";
+            btnOrdenar.UseVisualStyleBackColor = false;
+            btnOrdenar.Click += btnOrdenar_Click;
             // 
             // lstPacientes
             // 
@@ -192,33 +223,14 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
-            // btnAgregar
+            // progressBar
             // 
-            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
-            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnAgregar.FlatStyle = FlatStyle.Flat;
-            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAgregar.Location = new Point(22, 118);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(86, 35);
-            btnAgregar.TabIndex = 7;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = false;
-            btnAgregar.Click += btnAgregar_Click;
-            // 
-            // btnOrdenar
-            // 
-            btnOrdenar.BackColor = SystemColors.GradientActiveCaption;
-            btnOrdenar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnOrdenar.FlatStyle = FlatStyle.Flat;
-            btnOrdenar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnOrdenar.Location = new Point(839, 334);
-            btnOrdenar.Name = "btnOrdenar";
-            btnOrdenar.Size = new Size(86, 35);
-            btnOrdenar.TabIndex = 23;
-            btnOrdenar.Text = "Ordenar";
-            btnOrdenar.UseVisualStyleBackColor = false;
-            btnOrdenar.Click += btnOrdenar_Click;
+            progressBar.BackColor = Color.Black;
+            progressBar.ForeColor = SystemColors.GradientActiveCaption;
+            progressBar.Location = new Point(424, 217);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new Size(112, 29);
+            progressBar.TabIndex = 25;
             // 
             // FormPrincipalPacientes
             // 
@@ -226,6 +238,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkGray;
             ClientSize = new Size(978, 523);
+            Controls.Add(progressBar);
             Controls.Add(btnOrdenar);
             Controls.Add(lblDatosUsuario);
             Controls.Add(lblDetalles);
@@ -267,5 +280,6 @@
         private Label lblDatosUsuario;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
+        private ProgressBar progressBar;
     }
 }

@@ -15,6 +15,7 @@ using System.Xml;
 using System.Drawing.Text;
 using System.Runtime.CompilerServices;
 using System.Linq.Expressions;
+using Action = System.Action;
 
 namespace WindowsForm
 {
@@ -140,6 +141,7 @@ namespace WindowsForm
                             {
                                 this.accesobd.EstablecerId(pacienteUrgencia, "pacienteUrgencia");
                                 this.listaPacientes += pacienteUrgencia;
+                                this.ActualizarListadoPacientes();
                             }
                         }
                     }
@@ -156,6 +158,7 @@ namespace WindowsForm
                             {
                                 this.accesobd.EstablecerId(pacienteConsultorioExterno, "pacienteConsultorioExterno");
                                 this.listaPacientes += pacienteConsultorioExterno;
+                                this.ActualizarListadoPacientes();
                             }
                         }
                     }
@@ -172,11 +175,11 @@ namespace WindowsForm
                             {
                                 this.accesobd.EstablecerId(pacienteHospitalizado, "pacienteHospitalizado");
                                 this.listaPacientes += pacienteHospitalizado;
+                                this.ActualizarListadoPacientes();
                             }
                         }
                     }
                 }
-                this.ActualizarListadoPacientes();
             }
             else
             {
@@ -224,6 +227,7 @@ namespace WindowsForm
                                 {
                                     this.listaPacientes.Pacientes[indexSeleccionado] = pacienteUrgencia;
                                     this.listaPacientes.Pacientes[indexSeleccionado].Id = id;
+                                    this.ActualizarListadoPacientes();
                                 }
                             }
                         }
@@ -244,6 +248,7 @@ namespace WindowsForm
                                 {
                                     this.listaPacientes.Pacientes[indexSeleccionado] = pacienteConsultorioExterno;
                                     this.listaPacientes.Pacientes[indexSeleccionado].Id = id;
+                                    this.ActualizarListadoPacientes();
                                 }
                             }
                         }
@@ -265,13 +270,12 @@ namespace WindowsForm
                                 {
                                     this.listaPacientes.Pacientes[indexSeleccionado] = pacienteHospitalizado;
                                     this.listaPacientes.Pacientes[indexSeleccionado].Id = id;
+                                    this.ActualizarListadoPacientes();
                                 }
                             }
                         }
                     }
                 }
-
-                this.ActualizarListadoPacientes();
             }
             else
             {
@@ -370,16 +374,60 @@ namespace WindowsForm
 
         #region Actualizar lista
         /// <summary>
-        /// Actualiza el listado de pacientes en el ListBox del formulario.
+        /// Actualiza el listado de pacientes en el ListBox del formulario, con una barra de progreso.
         /// Limpia la lista actual y agrega cada paciente de la lista de pacientes a la clínica.
         /// </summary>
-        
-        private void ActualizarListadoPacientes()
+
+        private async void ActualizarListadoPacientes()
         {
+            this.progressBar.Visible = true;
+            await RealizarTareaAsincronaConProgreso(this.progressBar);
+            this.progressBar.Visible = false;
             this.lstPacientes.Items.Clear();
             foreach (Paciente paciente in this.listaPacientes.Pacientes)
             {
                 this.lstPacientes.Items.Add(paciente);
+            }
+        }
+
+
+        /// <summary>
+        /// Realiza una tarea asincrónica, haciendo ilusión a una tardanza que se refleja con un progreso gradual en una barra de progreso.
+        /// </summary>
+        /// <param name="progressBar">Representa la barra de progreso que se actualizará durante la tarea.</param>
+        /// <returns>Una tarea que representa la operación asincrónica.</returns>
+        private async Task RealizarTareaAsincronaConProgreso(ProgressBar progressBar)
+        {
+            const int tiempoTotal = 2000;
+            const int intervalo = 10; 
+
+            int numeroPasos = tiempoTotal / intervalo;
+
+            for (int i = 0; i < numeroPasos; i++)
+            {
+                await Task.Delay(intervalo);
+
+                int progresoActual = (i + 1) * 100 / numeroPasos;
+
+                UpdateProgressBar(progressBar, progresoActual);
+            }
+        }
+
+        /// <summary>
+        /// Actualiza la barra de progreso con el valor proporcionado.
+        /// Si la barra de progreso se está ejecutando en un hilo diferente al hilo que la creó, devuelve true y la invoca.
+        /// </summary>
+        /// <param name="progressBar">Representa la barra de progreso que se actualizará.</param>
+        /// <param name="value">Representa el valor del progreso.</param>
+        private void UpdateProgressBar(ProgressBar progressBar, int value)
+        {
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.Invoke(new Action(() => progressBar.Value = value));
+            }
+            else
+            {
+                progressBar.Value = value;
             }
         }
 

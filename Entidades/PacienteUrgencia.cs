@@ -185,7 +185,7 @@ namespace Entidades
             {
                 if (((object)pacienteUrg1) != null && ((object)pacienteUrg2) != null)
                 {
-                    if (pacienteUrg1.Id == pacienteUrg2.Id && pacienteUrg1.Dni == pacienteUrg2.Dni)
+                    if (pacienteUrg1.Id == pacienteUrg2.Id)
                     {
                         rta = true;
                     }
