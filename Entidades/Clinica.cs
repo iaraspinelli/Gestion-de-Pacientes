@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Entidades
 {
     /// <summary>
-    /// Clase publica que representa un objeto Clinica, que contendrá la colección genérica List<Paciente>, en la cual se podrán agregar todos los pacientes cargados.
+    /// Clase publica que representa un objeto Clinica, que contendrá la colección genérica List<T>, en la cual se podrán agregar todos los pacientes cargados al instanciarla con new Clinica<Paciente>.
     /// </summary>
     public class Clinica<T> where T : Paciente
     {

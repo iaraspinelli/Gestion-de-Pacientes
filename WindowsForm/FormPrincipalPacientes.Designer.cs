@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Button btnAgregar;
-            Button btnOrdenar;
             lstPacientes = new ListBox();
             lblOrdenItem = new Label();
             lblOrdenManera = new Label();
@@ -47,43 +45,16 @@
             progressBar = new ProgressBar();
             btnAgregar = new Button();
             btnOrdenar = new Button();
+            btnGuardarArchivo = new Button();
             SuspendLayout();
-            // 
-            // btnAgregar
-            // 
-            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
-            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnAgregar.FlatStyle = FlatStyle.Flat;
-            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAgregar.Location = new Point(22, 118);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(86, 35);
-            btnAgregar.TabIndex = 7;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = false;
-            btnAgregar.Click += btnAgregar_Click;
-            // 
-            // btnOrdenar
-            // 
-            btnOrdenar.BackColor = SystemColors.GradientActiveCaption;
-            btnOrdenar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
-            btnOrdenar.FlatStyle = FlatStyle.Flat;
-            btnOrdenar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnOrdenar.Location = new Point(839, 334);
-            btnOrdenar.Name = "btnOrdenar";
-            btnOrdenar.Size = new Size(86, 35);
-            btnOrdenar.TabIndex = 23;
-            btnOrdenar.Text = "Ordenar";
-            btnOrdenar.UseVisualStyleBackColor = false;
-            btnOrdenar.Click += btnOrdenar_Click;
             // 
             // lstPacientes
             // 
+            lstPacientes.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             lstPacientes.FormattingEnabled = true;
-            lstPacientes.ItemHeight = 15;
             lstPacientes.Location = new Point(130, 72);
             lstPacientes.Name = "lstPacientes";
-            lstPacientes.Size = new Size(675, 424);
+            lstPacientes.Size = new Size(675, 420);
             lstPacientes.TabIndex = 1;
             // 
             // lblOrdenItem
@@ -227,10 +198,52 @@
             // 
             progressBar.BackColor = Color.Black;
             progressBar.ForeColor = SystemColors.GradientActiveCaption;
-            progressBar.Location = new Point(424, 217);
+            progressBar.Location = new Point(418, 217);
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(112, 29);
             progressBar.TabIndex = 25;
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.BackColor = SystemColors.GradientActiveCaption;
+            btnAgregar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAgregar.Location = new Point(22, 118);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(86, 35);
+            btnAgregar.TabIndex = 7;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // btnOrdenar
+            // 
+            btnOrdenar.BackColor = SystemColors.GradientActiveCaption;
+            btnOrdenar.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnOrdenar.FlatStyle = FlatStyle.Flat;
+            btnOrdenar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnOrdenar.Location = new Point(839, 334);
+            btnOrdenar.Name = "btnOrdenar";
+            btnOrdenar.Size = new Size(86, 35);
+            btnOrdenar.TabIndex = 23;
+            btnOrdenar.Text = "Ordenar";
+            btnOrdenar.UseVisualStyleBackColor = false;
+            btnOrdenar.Click += btnOrdenar_Click;
+            // 
+            // btnGuardarArchivo
+            // 
+            btnGuardarArchivo.BackColor = SystemColors.GradientActiveCaption;
+            btnGuardarArchivo.FlatAppearance.MouseDownBackColor = Color.FromArgb(128, 128, 255);
+            btnGuardarArchivo.FlatStyle = FlatStyle.Flat;
+            btnGuardarArchivo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnGuardarArchivo.Location = new Point(839, 423);
+            btnGuardarArchivo.Name = "btnGuardarArchivo";
+            btnGuardarArchivo.Size = new Size(88, 24);
+            btnGuardarArchivo.TabIndex = 27;
+            btnGuardarArchivo.Text = "Guardar Lista";
+            btnGuardarArchivo.UseVisualStyleBackColor = false;
+            btnGuardarArchivo.Click += btnGuardarArchivo_Click;
             // 
             // FormPrincipalPacientes
             // 
@@ -238,6 +251,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkGray;
             ClientSize = new Size(978, 523);
+            Controls.Add(btnGuardarArchivo);
             Controls.Add(progressBar);
             Controls.Add(btnOrdenar);
             Controls.Add(lblDatosUsuario);
@@ -273,6 +287,7 @@
         private Button btnModificar;
         private Button btnEliminar;
         private Button btnOrdenar;
+        private Button btnGuardarArchivo;
         private Label lblIngresoPaciente;
         private ComboBox cboIngresoPaciente;
         private Label lblUsuario;

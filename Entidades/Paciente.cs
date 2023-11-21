@@ -228,7 +228,7 @@ namespace Entidades
             {
                 if (((object)paciente1) != null && ((object)paciente2) != null)
                 {
-                    if (paciente1 == paciente2)
+                    if (paciente1.nombre.ToUpper() == paciente2.nombre.ToUpper() && paciente1.dni == paciente2.dni)
                     {
                         rta = true;
                     }

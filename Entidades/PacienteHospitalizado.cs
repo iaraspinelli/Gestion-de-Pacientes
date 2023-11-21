@@ -167,7 +167,7 @@ namespace Entidades
         #region Sobrecarga de operadores
 
         /// <summary>
-        /// Comprueba si dos objetos de la clase PacienteHospitalizado son iguales en base a su nombre y DNI, gracias a la sobrecarga del operador ==.
+        /// Comprueba si dos objetos de la clase PacienteHospitalizado son iguales en base a su id, gracias a la sobrecarga del operador ==.
         /// </summary>
         /// <param name="pacienteHosp1">Representa el primer objeto PacienteHospitalizado a comparar.</param>
         /// <param name="pacienteHosp2">Representa el segundo objeto PacienteHospitalizado a comparar.</param>
@@ -194,7 +194,7 @@ namespace Entidades
         }
 
         /// <summary>
-        /// Comprueba si dos objetos de la clase PacienteHospitalizado son distintos en base a su nombre y DNI, gracias a la sobrecarga del operador !=.
+        /// Comprueba si dos objetos de la clase PacienteHospitalizado son distintos en base a su id, gracias a la sobrecarga del operador !=.
         /// </summary>
         /// <param name="pacienteHosp1">Representa el primer objeto PacienteHospitalizado a comparar.</param>
         /// <param name="pacienteHosp2">Representa el segundo objeto PacienteHospitalizado a comparar.</param>
