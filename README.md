@@ -24,7 +24,8 @@
 <h4>Proyecto Entidades</h4>
 
 ![DiagramaClasesEntidades](https://github.com/iaraspinelli/Spinelli.Iara.SegundoParcial/assets/123688782/7cdcc894-c689-42ce-9eb0-3f8eb20b0912)
-![UsuarioLogin - UsuariosExcepcion](https://github.com/iaraspinelli/![Paciente](https://github.com/iaraspinelli/Spinelli.Iara.SegundoParcial/assets/123688782/9367a735-1556-4214-b8b4-0d8d01832351)
+![UsuarioLogin - UsuariosExcepcion](https://github.com/iaraspinelli/Spinelli.Iara.SegundoParcial/assets/123688782/60b15ff6-4568-46f8-91b1-02e13d24563a)
+![Paciente](https://github.com/iaraspinelli/Spinelli.Iara.SegundoParcial/assets/123688782/9367a735-1556-4214-b8b4-0d8d01832351)
 Spinelli.Iara.SegundoParcial/assets/123688782/b0f7518b-e977-4255-aacf-74fd6f2e55ec)
 ![Clinica](https://github.com/iaraspinelli/Spinelli.Iara.SegundoParcial/assets/123688782/5dd28af7-9be2-4c4e-8a8f-63b8aa0fd5eb)
 ![Paciente](https://github.com/iaraspinelli/Spinelli.Iara.SegundoParcial/assets/123688782/eaa7b9f1-f284-438e-85f8-76a35bacd2ab)
