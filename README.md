@@ -1,5 +1,4 @@
-<h1>Titulo</h1>
-<h2>Segundo Parcial</h2>
+<h1>Titulo - Segundo Parcial</h1>
 <p>CRUD - Gestión Pacientes</p>
 
 
