@@ -1,60 +1,117 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Entidades.Clinica">
-    <Position X="10.25" Y="1.25" Width="3" />
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Entidades.Clinica&lt;T&gt;">
+    <Position X="7" Y="1.25" Width="4.25" />
     <TypeIdentifier>
       <HashCode>IAAAEABAABAAAAAAxAEAAIAAAgAAAAAAAAAAAAACAiA=</HashCode>
       <FileName>Clinica.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entidades.Paciente">
-    <Position X="5.25" Y="1.25" Width="2.5" />
+    <Position X="12.5" Y="1.25" Width="4.75" />
     <TypeIdentifier>
-      <HashCode>AAEAIAABAAQAAQCEgAAAgAAAAAAAAgABAAIAAAAAAiA=</HashCode>
+      <HashCode>AAECIAABAAQAAQiEgAAAgAAAAAAAAgABAAIAAAAAAiA=</HashCode>
       <FileName>Paciente.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entidades.PacienteConsultorioExterno">
-    <Position X="8.25" Y="7" Width="2.5" />
+    <Position X="20.25" Y="12.25" Width="9" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAEgAABAAAAAQAAAAABAAAAAAABAiA=</HashCode>
       <FileName>PacienteConsultorioExterno.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entidades.PacienteHospitalizado">
-    <Position X="2.25" Y="7" Width="2.5" />
+    <Position X="1" Y="12.25" Width="8.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAEAAAAEgAAAAAAAAAEAAAABAAAAAAAAEiA=</HashCode>
       <FileName>PacienteHospitalizado.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entidades.PacienteUrgencia">
-    <Position X="5.25" Y="7" Width="2.5" />
+    <Position X="10.25" Y="12.25" Width="9.25" />
     <TypeIdentifier>
       <HashCode>AEAAAAACAAAAAgAEgAAAAAAAAAAAQAABAAAAAAAAAiA=</HashCode>
       <FileName>PacienteUrgencia.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entidades.UsuarioLogin">
-    <Position X="0.75" Y="1.25" Width="2.25" />
+    <Position X="2" Y="1.25" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQBAACEAAAAAAAAAAQAAACAAAAQAAAAAAA=</HashCode>
       <FileName>UsuarioLogin.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Entidades.ConexionSqlException">
+    <Position X="26.75" Y="1.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ConexionSqlExcepcion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entidades.AccesoClinica">
+    <Position X="18.5" Y="1.25" Width="8.25" />
+    <TypeIdentifier>
+      <HashCode>gAggEAABAAgAIEAQAAAAAgABAAAAAAAGQAgQAAAAAIE=</HashCode>
+      <FileName>AccesoClinica.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Entidades.UsuariosExcepcion">
+    <Position X="2" Y="3.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UsuariosExcepcion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Entidades.IAcceso">
+    <Position X="18.5" Y="6.25" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>gAggAAABAAgAIAAAAAAAAgABAAAAAAAGQAgQAAAAAIA=</HashCode>
+      <FileName>IAcceso.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="EEspecialidadUrgencia">
-    <Position X="5.25" Y="10.75" Width="2" />
+    <Position X="10.25" Y="16.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Enumerados.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="EEspecialidad">
-    <Position X="8.25" Y="10.75" Width="2" />
+    <Position X="20.25" Y="16.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAACgAACAAAAAUAAAAAEAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
       <FileName>Enumerados.cs</FileName>
     </TypeIdentifier>
   </Enum>
+  <Delegate Name="Entidades.DelegadoValidarFormulario">
+    <Position X="2" Y="6.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegados.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Entidades.DelegadoOperacionInvalida">
+    <Position X="2" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegados.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Entidades.DelegadoOperacionValida">
+    <Position X="2" Y="8.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegados.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Entidades.DelegadoMostrarFechaActual">
+    <Position X="2" Y="9.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegados.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
